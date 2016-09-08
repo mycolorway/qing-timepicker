@@ -1,0 +1,28 @@
+{
+  "name": "qing-timepicker",
+  "version": "0.0.1",
+  "description": "A simple timepicker component.",
+  "homepage": "http://mycolorway.github.io/qing-timepicker",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mycolorway/qing-timepicker.git"
+  },
+  "author": "farthinker <farthinker@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mycolorway/qing-timepicker/issues"
+  },
+  "main": "dist/qing-timepicker.js",
+  "scripts": {
+    "start": "gulp",
+    "test": "gulp test"
+  },
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "moment": "^2.14.1",
+    "qing-module": "~1.0.0"
+  },
+  "devDependencies": {
+    "qing-build": "^0.x"
+  }
+}

@@ -1,0 +1,69 @@
+
+.qing-timepicker {
+  position: relative;
+
+  .text-field {
+    cursor: pointer;
+  }
+
+  .popover {
+    display: none;
+    padding: 0;
+    border: 1px solid #dfdfdf;
+    background: #ffffff;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    &.active {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  .select-view {
+    flex: 1;
+    border-left: 1px solid #dfdfdf;
+    width: 60px;
+    overflow: hidden;
+
+    &:hover {
+      overflow-y: auto;
+    }
+
+    &:first-child {
+      border-width: 0;
+    }
+
+    ul {
+      list-style: none;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      max-height: 240px;
+
+      li {
+        list-style: none;
+        box-sizing: content-box;
+        margin: 0;
+        width: 100%;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+        cursor: pointer;
+        user-select: none;
+
+        &:hover,
+        &.selected {
+          background: #dfdfdf;
+        }
+
+        &:last-child:after {
+          content: '';
+          height: 240px;
+          display: block;
+        }
+      }
+    }
+  }
+}

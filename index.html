@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>QingTimepicker</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link media="all" rel="stylesheet" type="text/css" href="dist/qing-timepicker.css">
+
+	<script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="node_modules/moment/moment.js"></script>
+	<script type="text/javascript" src="node_modules/qing-module/dist/qing-module.js"></script>
+	<script type="text/javascript" src="dist/qing-timepicker.js"></script>
+	<script type="text/javascript">
+		$(function() {
+      var qingTimepicker = new QingTimepicker({
+        el: '.time-field'
+      });
+		});
+	</script>
+
+</head>
+<body>
+	<input type="text" class="time-field" placeholder="please select time">
+</body>
+</html>
