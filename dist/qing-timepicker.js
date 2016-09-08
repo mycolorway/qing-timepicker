@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-timepicker/license.html
  *
- * Date: 2016-09-8
+ * Date: 2016-09-9
  */
 ;(function(root, factory) {
   if (typeof module === 'object' && module.exports) {
@@ -53,12 +53,12 @@ Input = (function(superClass) {
   Input.prototype._render = function() {
     this.el = $('<div class="input"></div>');
     this.el.append("<div class='placeholder'>" + this.opts.placeholder + "</div>");
-    this.itemWrapper = $('<ul class="item-wrapper"></ul>').appendTo(this.el);
+    this.timeWrapper = $('<ul class="time-wrapper"></ul>').appendTo(this.el);
     return this.el.appendTo(this.wrapper);
   };
 
   Input.prototype._renderItem = function(type) {
-    return $('<li class="item"><span class="value"></span></li>').attr('data-type', type).appendTo(this.itemWrapper);
+    return $('<li><span class="value"></span></li>').attr('data-type', type).appendTo(this.timeWrapper);
   };
 
   Input.prototype._bind = function() {
@@ -83,7 +83,7 @@ Input = (function(superClass) {
   };
 
   Input.prototype._setItemValue = function(type, time) {
-    return this.itemWrapper.find(".item[data-type='" + type + "'] .value").text(this._parseItemValue(time[type]()));
+    return this.timeWrapper.find("[data-type='" + type + "'] .value").text(this._parseItemValue(time[type]()));
   };
 
   Input.prototype.setActive = function(active) {
@@ -94,11 +94,11 @@ Input = (function(superClass) {
 
   Input.prototype.highlight = function(type) {
     this.removeHighlight();
-    return this.itemWrapper.find(".item[data-type='" + type + "'] .value").addClass('highlight');
+    return this.timeWrapper.find("[data-type='" + type + "'] .value").addClass('highlight');
   };
 
   Input.prototype.removeHighlight = function() {
-    return this.itemWrapper.find('.value.highlight').removeClass('highlight');
+    return this.timeWrapper.find('.value.highlight').removeClass('highlight');
   };
 
   Input.prototype._parseItemValue = function(value) {
@@ -178,7 +178,7 @@ Popover = (function(superClass) {
         return selector.on('hover', function(e, type) {
           return _this.trigger('hover', [type]);
         }).on('select', function(e, type, value) {
-          _this.time[type](parseInt(value, 10));
+          _this.time[type](value);
           return _this.trigger('select', _this.time);
         });
       };
@@ -275,7 +275,7 @@ SelectView = (function(superClass) {
     })(this)).on('click', 'li', (function(_this) {
       return function(e) {
         var value;
-        value = $(e.currentTarget).text();
+        value = parseInt($(e.currentTarget).text(), 10);
         _this.select(value);
         _this.trigger('select', [_this.type, value]);
         return _this.scrollToSelected(120);
@@ -408,7 +408,8 @@ QingTimepicker = (function(superClass) {
           return;
         }
         _this.popover.setActive(false);
-        return _this.input.setActive(false);
+        _this.input.setActive(false);
+        return null;
       };
     })(this));
     this.input.on('click', (function(_this) {

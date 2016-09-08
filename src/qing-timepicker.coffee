@@ -55,6 +55,7 @@ class QingTimepicker extends QingModule
       return if $.contains @wrapper[0], e.target
       @popover.setActive false
       @input.setActive false
+      null
 
     @input.on 'click', =>
       if @popover.active

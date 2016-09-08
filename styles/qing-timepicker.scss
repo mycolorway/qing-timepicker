@@ -1,5 +1,5 @@
 $input-width: 140px;
-$input-height: 40px;
+$input-height: 38px;
 $select-width: 70px;
 $item-height: 40px;
 $list-height: $item-height * 6;
@@ -24,47 +24,47 @@ $list-height: $item-height * 6;
         display: none;
       }
 
-      .item-wrapper {
+      .time-wrapper {
         display: block;
       }
     }
 
     .placeholder {
-      font-size: 14px;
       color: #dfdfdf;
     }
 
-    .item-wrapper {
+    ul.time-wrapper {
       display: none;
       list-style: none;
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-    }
 
-    .item {
-      display: inline-block;
-      list-style: none;
-      box-sizing: content-box;
-
-      &:after {
-        content: ':';
-      }
-
-      &:last-child:after {
-        content: '';
-      }
-
-      .value {
+      li {
         display: inline-block;
-        width: 24px;
-        height: 24px;
-        line-height: 24px;
-        text-align: center;
-      }
+        list-style: none;
+        margin: 0;
+        padding: 0;
 
-      .value.highlight {
-        background-color: #DEEAFE;
+        &:after {
+          content: ':';
+        }
+
+        &:last-child:after {
+          content: '';
+        }
+
+        .value {
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          line-height: 24px;
+          text-align: center;
+        }
+
+        .value.highlight {
+          background-color: #DEEAFE;
+        }
       }
     }
   }
@@ -73,9 +73,11 @@ $list-height: $item-height * 6;
     display: none;
     position: absolute;
     right: 0;
-    padding: 0 8px;
-    line-height: 38px;
+    width: 30px;
+    height: 40px;
+    line-height: 40px;
     color: #bfbfbf;
+    text-align: center;
     text-decoration: none;
 
     &.active {

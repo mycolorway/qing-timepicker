@@ -24,15 +24,15 @@ class Input extends QingModule
     @el = $ '<div class="input"></div>'
 
     @el.append "<div class='placeholder'>#{@opts.placeholder}</div>"
-    @itemWrapper = $ '<ul class="item-wrapper"></ul>'
+    @timeWrapper = $ '<ul class="time-wrapper"></ul>'
       .appendTo @el
 
     @el.appendTo @wrapper
 
   _renderItem: (type) ->
-    $ '<li class="item"><span class="value"></span></li>'
+    $ '<li><span class="value"></span></li>'
       .attr 'data-type', type
-      .appendTo @itemWrapper
+      .appendTo @timeWrapper
 
   _bind: ->
     @el.on 'click', (e) =>
@@ -46,7 +46,7 @@ class Input extends QingModule
       @el.removeClass 'selected'
 
   _setItemValue: (type, time) ->
-    @itemWrapper.find(".item[data-type='#{type}'] .value")
+    @timeWrapper.find("[data-type='#{type}'] .value")
       .text @_parseItemValue(time[type]())
 
   setActive: (active) ->
@@ -56,10 +56,10 @@ class Input extends QingModule
 
   highlight: (type) ->
     @removeHighlight()
-    @itemWrapper.find(".item[data-type='#{type}'] .value").addClass 'highlight'
+    @timeWrapper.find("[data-type='#{type}'] .value").addClass 'highlight'
 
   removeHighlight: ->
-    @itemWrapper.find('.value.highlight').removeClass 'highlight'
+    @timeWrapper.find('.value.highlight').removeClass 'highlight'
 
   _parseItemValue: (value) ->
     if value < 10 then "0#{value}" else value.toString()

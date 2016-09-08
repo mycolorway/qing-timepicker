@@ -30,7 +30,7 @@ class SelectView extends QingModule
         @trigger 'hover', [@type]
         e.stopImmediatePropagation()
       .on 'click', 'li', (e) =>
-        value = $(e.currentTarget).text()
+        value = parseInt $(e.currentTarget).text(), 10
         @select value
         @trigger 'select', [@type, value]
         @scrollToSelected 120

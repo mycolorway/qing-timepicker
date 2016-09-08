@@ -39,7 +39,7 @@ class Popover extends QingModule
         .on 'hover', (e, type) =>
           @trigger 'hover', [type]
         .on 'select', (e, type, value) =>
-          @time[type](parseInt(value, 10))
+          @time[type](value)
           @trigger 'select', @time
 
     @el.on 'mouseout', (e) =>
