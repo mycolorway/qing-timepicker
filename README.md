@@ -12,6 +12,7 @@ A simple timepicker component.
 
 ```html
 <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="node_modules/moment/moment.js"></script>
 <script type="text/javascript" src="node_modules/qing-module/dist/qing-module.js"></script>
 <script type="text/javascript" src="node_modules/qing-timepicker/dist/qing-timepicker.js"></script>
 
@@ -23,7 +24,7 @@ var qingTimepicker = new QingTimepicker({
   el: '.qing-timepicker'
 });
 
-qingTimepicker.on('ready', function(e) {
+qingTimepicker.on('change', function(e, timeStr) {
   // do something
 });
 ```
@@ -34,7 +35,27 @@ __el__
 
 Selector/Element/jQuery Object, required, specify the html element.
 
+__placeholder__
+
+String, specify placeholder for input text field.
+
+__format__
+
+String, 'HH:mm:ss' by default, specify time format for time field value. 'HH:mm:ss', 'HH:mm','mm:ss'.
+
+__renderer__
+
+Function, which will be called after component renders. This option can be used to customize html structure.
+
 ## Methods
+
+__setTime__ (momentObj)
+
+Set value for timepicker, only momentjs object is accepted as param.
+
+__getTime__ ()
+
+Get current selected time as String.
 
 __destroy__ ()
 
@@ -42,9 +63,9 @@ Destroy component, restore element to original state.
 
 ## Events
 
-__ready__ (event)
+__change__ (event)
 
-Triggered after initialization.
+Triggered when current selected date is changed.
 
 ## Installation
 
