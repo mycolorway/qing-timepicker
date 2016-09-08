@@ -1,20 +1,78 @@
-$select-width: 60;
-$item-height: 24;
-$list-height: 24 * 6;
+$input-width: 140px;
+$select-width: 70px;
+$item-height: 40px;
+$list-height: $item-height * 6;
 
 .qing-timepicker {
   position: relative;
   display: inline-block;
 
-  .input .text-field {
+  .input {
+    width: $input-width;
+    border: 1px solid #bfbfbf;
+    border-radius: 2px;
+    padding: 0 10px;
+    font-size: 16px;
+    line-height: 40px;
+    color: #4a4a4a;
     cursor: pointer;
+
+    &.selected {
+      .placeholder {
+        display: none;
+      }
+
+      .item-wrapper {
+        display: block;
+      }
+    }
+
+    .placeholder {
+      font-size: 14px;
+      color: #dfdfdf;
+    }
+
+    .item-wrapper {
+      display: none;
+      list-style: none;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    .item {
+      display: inline-block;
+      list-style: none;
+      box-sizing: content-box;
+
+      &:after {
+        content: ':';
+      }
+
+      &:last-child:after {
+        content: '';
+      }
+
+      .value {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+      }
+
+      .value.highlight {
+        background-color: #DEEAFE;
+      }
+    }
   }
 
   .clear-button {
     display: none;
     position: absolute;
     right: 0;
-    padding: 2px 5px;
+    padding: 0 8px;
+    line-height: 38px;
     color: #bfbfbf;
     text-decoration: none;
 
@@ -26,11 +84,15 @@ $list-height: 24 * 6;
   .popover {
     display: none;
     padding: 0;
-    border: 1px solid #dfdfdf;
+    border: 1px solid #dddddd;
+    box-shadow: 0 0 6px 0 rgba(0,0,0,0.15);
+    border-radius: 2px;
     background: #ffffff;
     position: absolute;
     top: 0;
     left: 0;
+    font-size: 14px;
+    color: #4A4A4A;
 
     &.active {
       display: flex;
@@ -40,8 +102,8 @@ $list-height: 24 * 6;
 
   .select-view {
     flex: 1;
-    border-left: 1px solid #dfdfdf;
-    width: #{$select-width}px;
+    border-left: 1px solid #eeeeee;
+    width: $select-width;
     overflow: hidden;
 
     &:hover {
@@ -57,27 +119,30 @@ $list-height: 24 * 6;
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      max-height: #{$list-height}px;
+      max-height: $list-height;
 
       li {
         list-style: none;
         box-sizing: content-box;
         margin: 0;
         width: 100%;
-        height: #{$item-height}px;
-        line-height: #{$item-height}px;
+        height: $item-height;
+        line-height: $item-height;
         text-align: center;
         cursor: pointer;
-        user-select: none;
 
         &:hover,
         &.selected {
-          background: #dfdfdf;
+          background: #F6F6F6;
+        }
+
+        &.selected {
+          font-weight: bold;
         }
 
         &:last-child:after {
           content: '';
-          height: #{$list-height - $item-height}px;
+          height: $list-height - $item-height;
           display: block;
         }
       }

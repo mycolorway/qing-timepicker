@@ -39,19 +39,22 @@ class QingTimepicker extends QingModule
       .data 'qingTimepicker', @
 
   _initChildComponents: ->
-    @input = new Input
+    componentOpts = extractChildComponentOpts @opts.format
+
+    @input = new Input $.extend
       wrapper: @wrapper
       placeholder: @opts.placeholder || @el.attr('placeholder') || ''
+    , componentOpts
 
-    popoverOpts = $.extend
+    @popover = new Popover $.extend
       wrapper: @wrapper
-    , extractPopoverOpts(@opts.format)
-    @popover = new Popover popoverOpts
+    , componentOpts
 
   _bind: ->
     $(document).on "click.qing-timepicker-#{@id}", (e) =>
       return if $.contains @wrapper[0], e.target
       @popover.setActive false
+      @input.setActive false
 
     @input.on 'click', =>
       if @popover.active
@@ -75,7 +78,9 @@ class QingTimepicker extends QingModule
         @popover.setPosition
           top: @input.el.outerHeight() + 2
       .on 'hover', (e, type) =>
-        @input.selectRange type if @time
+        @input.highlight type if @time
+      .on 'mouseout', =>
+        @input.removeHighlight()
       .on 'select', (e, time) =>
         @setTime time
         @clearButton.addClass 'active'
@@ -87,7 +92,7 @@ class QingTimepicker extends QingModule
       formattedTime = parsed.format(@opts.format)
       @time = parsed.clone()
 
-      @input.setValue formattedTime
+      @input.setValue @time
       @el.val formattedTime
       @trigger 'change', [formattedTime]
 
@@ -96,7 +101,7 @@ class QingTimepicker extends QingModule
 
   clear: ->
     @time = null
-    @input.setValue ''
+    @input.setValue @time
     @el.val ''
     @clearButton.removeClass 'active'
 
@@ -107,7 +112,7 @@ class QingTimepicker extends QingModule
     @wrapper.remove()
     $(document).off ".qing-timepicker-#{@id}"
 
-extractPopoverOpts = (format) ->
+extractChildComponentOpts = (format) ->
   opts = {}
   switch format
     when 'HH:mm:ss'

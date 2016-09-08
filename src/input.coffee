@@ -2,6 +2,9 @@ class Input extends QingModule
 
   @opts:
     wrapper: null
+    showHour: true
+    showMinute: true
+    showSecond: true
     placeholder: ''
 
   constructor: (opts) ->
@@ -10,41 +13,56 @@ class Input extends QingModule
 
     @wrapper = $ @opts.wrapper
     @active = false
+
     @_render()
+    @_renderItem('hour') if @opts.showHour
+    @_renderItem('minute') if @opts.showMinute
+    @_renderItem('second') if @opts.showSecond
     @_bind()
 
   _render: ->
-    @el = $ '<div class="input">'
-    @textField = $ '<input type="text" class="text-field" readonly>'
-      .attr 'placeholder', @opts.placeholder
+    @el = $ '<div class="input"></div>'
+
+    @el.append "<div class='placeholder'>#{@opts.placeholder}</div>"
+    @itemWrapper = $ '<ul class="item-wrapper"></ul>'
       .appendTo @el
+
     @el.appendTo @wrapper
 
+  _renderItem: (type) ->
+    $ '<li class="item"><span class="value"></span></li>'
+      .attr 'data-type', type
+      .appendTo @itemWrapper
+
   _bind: ->
-    @textField.on 'click', (e) =>
+    @el.on 'click', (e) =>
       @trigger 'click'
 
-  setValue: (value) ->
-    @textField.val value
-    value
+  setValue: (time) ->
+    if time
+      ['hour', 'minute', 'second'].forEach (type) => @_setItemValue(type, time)
+      @el.addClass 'selected'
+    else
+      @el.removeClass 'selected'
 
-  getValue: ->
-    @textField.val()
+  _setItemValue: (type, time) ->
+    @itemWrapper.find(".item[data-type='#{type}'] .value")
+      .text @_parseItemValue(time[type]())
 
   setActive: (active) ->
     @active = active
-    @textField.toggleClass 'active', active
+    @el.toggleClass 'active', active
     @active
 
-  selectRange: (type) ->
-    @textField.focus()
+  highlight: (type) ->
+    @removeHighlight()
+    @itemWrapper.find(".item[data-type='#{type}'] .value").addClass 'highlight'
 
-    [selectionStart, selectionEnd] = switch type
-      when 'hour' then [0, 2]
-      when 'minute' then [3, 5]
-      when 'second' then [6, 8]
+  removeHighlight: ->
+    @itemWrapper.find('.value.highlight').removeClass 'highlight'
 
-    @textField[0].setSelectionRange selectionStart, selectionEnd
+  _parseItemValue: (value) ->
+    if value < 10 then "0#{value}" else value.toString()
 
   destroy: ->
     @el.remove()

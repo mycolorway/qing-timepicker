@@ -5,7 +5,7 @@ class Popover extends QingModule
     wrapper: null
     showHour: true
     showMinute: true
-    showSecond: false
+    showSecond: true
 
   constructor: (opts) ->
     super
@@ -41,6 +41,10 @@ class Popover extends QingModule
         .on 'select', (e, type, value) =>
           @time[type](parseInt(value, 10))
           @trigger 'select', @time
+
+    @el.on 'mouseout', (e) =>
+      @trigger 'mouseout'
+      e.stopImmediatePropagation()
 
   setTime: (time) =>
     if !@time || !@time.isSame(time)
