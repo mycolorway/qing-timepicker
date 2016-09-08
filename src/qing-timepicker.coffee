@@ -70,11 +70,14 @@ class QingTimepicker extends QingModule
         @setTime time
 
   setTime: (time) ->
-    if moment.isMoment(time) && time.isValid() && !time.isSame(@time)
-      formattedTime = time.format(@opts.format)
+    parsed =
+      if moment.isMoment(time) then time else moment(time, @opts.format, true)
+    if parsed.isValid() && !parsed.isSame(@time)
+      formattedTime = parsed.format(@opts.format)
+      @time = parsed.clone()
+
       @input.setValue formattedTime
       @el.val formattedTime
-      @time = time.clone()
       @trigger 'change', [formattedTime]
 
   getTime: ->
@@ -94,7 +97,9 @@ extractPopoverOpts = (format) ->
       opts.showHour = opts.showMinute = opts.showSecond = true
     when 'HH:mm'
       opts.showHour = opts.showMinute = true
+      opts.showSecond = false
     when 'mm:ss'
+      opts.showHour = false
       opts.showMinute = opts.showSecond = true
   opts
 

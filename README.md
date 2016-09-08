@@ -41,7 +41,7 @@ String, specify placeholder for input text field.
 
 __format__
 
-String, 'HH:mm:ss' by default, specify time format for time field value. 'HH:mm:ss', 'HH:mm','mm:ss'.
+String, `'HH:mm:ss'/'HH:mm'/'mm:ss'`, `'HH:mm:ss'` by default, specify time format for time field value.
 
 __renderer__
 
@@ -49,9 +49,9 @@ Function, which will be called after component renders. This option can be used 
 
 ## Methods
 
-__setTime__ (momentObj)
+__setTime__ (time)
 
-Set value for timepicker, only momentjs object is accepted as param.
+Set value for timepicker, time param should be Momentjs Object/String.
 
 __getTime__ ()
 

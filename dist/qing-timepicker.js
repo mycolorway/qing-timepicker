@@ -404,12 +404,13 @@ QingTimepicker = (function(superClass) {
   };
 
   QingTimepicker.prototype.setTime = function(time) {
-    var formattedTime;
-    if (moment.isMoment(time) && time.isValid() && !time.isSame(this.time)) {
-      formattedTime = time.format(this.opts.format);
+    var formattedTime, parsed;
+    parsed = moment.isMoment(time) ? time : moment(time, this.opts.format, true);
+    if (parsed.isValid() && !parsed.isSame(this.time)) {
+      formattedTime = parsed.format(this.opts.format);
+      this.time = parsed.clone();
       this.input.setValue(formattedTime);
       this.el.val(formattedTime);
-      this.time = time.clone();
       return this.trigger('change', [formattedTime]);
     }
   };
@@ -438,8 +439,10 @@ extractPopoverOpts = function(format) {
       break;
     case 'HH:mm':
       opts.showHour = opts.showMinute = true;
+      opts.showSecond = false;
       break;
     case 'mm:ss':
+      opts.showHour = false;
       opts.showMinute = opts.showSecond = true;
   }
   return opts;

@@ -1,3 +1,6 @@
+$select-width: 60;
+$item-height: 24;
+$list-height: 24 * 6;
 
 .qing-timepicker {
   position: relative;
@@ -24,7 +27,7 @@
   .select-view {
     flex: 1;
     border-left: 1px solid #dfdfdf;
-    width: 60px;
+    width: #{$select-width}px;
     overflow: hidden;
 
     &:hover {
@@ -40,15 +43,15 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      max-height: 240px;
+      max-height: #{$list-height}px;
 
       li {
         list-style: none;
         box-sizing: content-box;
         margin: 0;
         width: 100%;
-        height: 24px;
-        line-height: 24px;
+        height: #{$item-height}px;
+        line-height: #{$item-height}px;
         text-align: center;
         cursor: pointer;
         user-select: none;
@@ -60,7 +63,7 @@
 
         &:last-child:after {
           content: '';
-          height: 216px;
+          height: #{$list-height - $item-height}px;
           display: block;
         }
       }
