@@ -9,9 +9,19 @@
  * Date: 2016-09-8
  */
 .qing-timepicker {
-  position: relative; }
-  .qing-timepicker .text-field {
+  position: relative;
+  display: inline-block; }
+  .qing-timepicker .input .text-field {
     cursor: pointer; }
+  .qing-timepicker .clear-button {
+    display: none;
+    position: absolute;
+    right: 0;
+    padding: 2px 5px;
+    color: #bfbfbf;
+    text-decoration: none; }
+    .qing-timepicker .clear-button.active {
+      display: inline; }
   .qing-timepicker .popover {
     display: none;
     padding: 0;

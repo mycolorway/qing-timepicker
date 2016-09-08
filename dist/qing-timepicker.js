@@ -347,6 +347,7 @@ QingTimepicker = (function(superClass) {
 
   QingTimepicker.prototype._render = function() {
     this.wrapper = $('<div class="qing-timepicker"></div>').data('qingTimepicker', this).insertBefore(this.el).append(this.el);
+    this.clearButton = $('<a href="javascript:;" class="clear-button">x</a>').appendTo(this.wrapper);
     return this.el.hide().data('qingTimepicker', this);
   };
 
@@ -384,6 +385,16 @@ QingTimepicker = (function(superClass) {
         }
       };
     })(this));
+    this.clearButton.on('click', (function(_this) {
+      return function() {
+        if (_this.popover.active) {
+          _this.popover.setActive(false);
+          _this.input.setActive(false);
+        }
+        _this.clear();
+        return _this.trigger('clear');
+      };
+    })(this));
     return this.popover.on('show', (function(_this) {
       return function(e) {
         return _this.popover.setPosition({
@@ -398,7 +409,8 @@ QingTimepicker = (function(superClass) {
       };
     })(this)).on('select', (function(_this) {
       return function(e, time) {
-        return _this.setTime(time);
+        _this.setTime(time);
+        return _this.clearButton.addClass('active');
       };
     })(this));
   };
@@ -418,6 +430,13 @@ QingTimepicker = (function(superClass) {
   QingTimepicker.prototype.getTime = function() {
     var ref;
     return (ref = this.time) != null ? ref.format(this.opts.format) : void 0;
+  };
+
+  QingTimepicker.prototype.clear = function() {
+    this.time = null;
+    this.input.setValue('');
+    this.el.val('');
+    return this.clearButton.removeClass('active');
   };
 
   QingTimepicker.prototype.destroy = function() {

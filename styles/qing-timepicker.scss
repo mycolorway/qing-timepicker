@@ -4,9 +4,23 @@ $list-height: 24 * 6;
 
 .qing-timepicker {
   position: relative;
+  display: inline-block;
 
-  .text-field {
+  .input .text-field {
     cursor: pointer;
+  }
+
+  .clear-button {
+    display: none;
+    position: absolute;
+    right: 0;
+    padding: 2px 5px;
+    color: #bfbfbf;
+    text-decoration: none;
+
+    &.active {
+      display: inline;
+    }
   }
 
   .popover {

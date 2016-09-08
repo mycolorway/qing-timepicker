@@ -57,6 +57,10 @@ __getTime__ ()
 
 Get current selected time as String.
 
+__clear__ ()
+
+Clear current selected time.
+
 __destroy__ ()
 
 Destroy component, restore element to original state.
@@ -65,7 +69,11 @@ Destroy component, restore element to original state.
 
 __change__ (event)
 
-Triggered when current selected date is changed.
+Triggered when current selected time is changed.
+
+__clear__ (event)
+
+Triggered when current selected time is cleared.
 
 ## Installation
 
