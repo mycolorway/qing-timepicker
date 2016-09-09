@@ -100,10 +100,8 @@ describe 'QingTimepicker', ->
     expect(spy.called).to.be.true
 
   it 'should work fine with setTime method', ->
+    qingTimepicker.time = null
     qingTimepicker.setTime ''
-    expect(qingTimepicker.time).to.be.not.ok
-
-    qingTimepicker.setTime '23:33'
     expect(qingTimepicker.time).to.be.not.ok
 
     spy = sinon.spy()

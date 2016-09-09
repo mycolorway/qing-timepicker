@@ -69,6 +69,16 @@ describe 'Popover', ->
     selector.trigger 'select', [selector.type, 1]
     expect(spy.called).to.be.true
 
+  it 'should set popover\'s active to false when the last selector select', ->
+    selector = popover.selectors[popover.selectors.length - 1]
+    selector.trigger 'select', [selector.type, 1]
+    expect(popover.active).to.be.false
+
+    popover.setActive true
+    selector = popover.selectors[0]
+    selector.trigger 'select', [selector.type, 1]
+    expect(popover.active).to.be.true
+
   it 'should update popover\'s time when setTime method called', ->
     oldTime = popover.time
     popover.setTime()

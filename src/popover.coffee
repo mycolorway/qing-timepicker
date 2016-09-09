@@ -42,6 +42,7 @@ class Popover extends QingModule
         .on 'select', (e, type, value) =>
           @time[type](value)
           @trigger 'select', @time
+          @setActive(false) if type == @selectors[@selectors.length - 1].type
 
     @el.on 'mouseout', (e) =>
       @trigger 'mouseout'

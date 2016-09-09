@@ -12,19 +12,24 @@
   position: relative;
   display: inline-block; }
   .qing-timepicker .input {
-    width: 140px;
+    width: 150px;
     height: 38px;
     line-height: 38px;
     border: 1px solid #bfbfbf;
     border-radius: 2px;
-    padding: 0 10px;
+    box-sizing: border-box;
+    padding: 0 6px;
     font-size: 16px;
     color: #4a4a4a;
     cursor: pointer; }
-    .qing-timepicker .input.selected .placeholder {
-      display: none; }
-    .qing-timepicker .input.selected .time-wrapper {
-      display: block; }
+    .qing-timepicker .input.selected {
+      padding-right: 30px; }
+      .qing-timepicker .input.selected .placeholder {
+        display: none; }
+      .qing-timepicker .input.selected .time-wrapper {
+        display: inline-flex;
+        justify-content: space-around;
+        align-items: center; }
     .qing-timepicker .input .placeholder {
       color: #dfdfdf; }
     .qing-timepicker .input ul.time-wrapper {
@@ -34,29 +39,27 @@
       margin: 0;
       padding: 0; }
       .qing-timepicker .input ul.time-wrapper li {
-        display: inline-block;
         list-style: none;
         margin: 0;
         padding: 0; }
-        .qing-timepicker .input ul.time-wrapper li:after {
-          content: ':'; }
-        .qing-timepicker .input ul.time-wrapper li:last-child:after {
-          content: ''; }
         .qing-timepicker .input ul.time-wrapper li .value {
-          display: inline-block;
-          width: 24px;
+          display: block;
+          padding: 0 5px;
           height: 24px;
           line-height: 24px;
           text-align: center; }
         .qing-timepicker .input ul.time-wrapper li .value.highlight {
           background-color: #DEEAFE; }
+      .qing-timepicker .input ul.time-wrapper li.divider {
+        margin: 0 3px; }
+        .qing-timepicker .input ul.time-wrapper li.divider:last-child {
+          display: none; }
   .qing-timepicker .clear-button {
     display: none;
     position: absolute;
     right: 0;
     width: 30px;
-    height: 40px;
-    line-height: 40px;
+    line-height: 38px;
     color: #bfbfbf;
     text-align: center;
     text-decoration: none; }

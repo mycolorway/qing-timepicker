@@ -58,7 +58,8 @@ Input = (function(superClass) {
   };
 
   Input.prototype._renderItem = function(type) {
-    return $('<li><span class="value"></span></li>').attr('data-type', type).appendTo(this.timeWrapper);
+    $('<li><span class="value"></span></li>').attr('data-type', type).appendTo(this.timeWrapper);
+    return $('<li class="divider">:</li>').appendTo(this.timeWrapper);
   };
 
   Input.prototype._bind = function() {
@@ -180,7 +181,10 @@ Popover = (function(superClass) {
           return _this.trigger('hover', [type]);
         }).on('select', function(e, type, value) {
           _this.time[type](value);
-          return _this.trigger('select', _this.time);
+          _this.trigger('select', _this.time);
+          if (type === _this.selectors[_this.selectors.length - 1].type) {
+            return _this.setActive(false);
+          }
         });
       };
     })(this));
@@ -439,10 +443,15 @@ QingTimepicker = (function(superClass) {
       };
     })(this));
     return this.popover.on('show', (function(_this) {
-      return function(e) {
+      return function() {
         return _this.popover.setPosition({
           top: _this.input.el.outerHeight() + 6
         });
+      };
+    })(this)).on('hide', (function(_this) {
+      return function() {
+        _this.input.removeHighlight();
+        return _this.input.setActive(false);
       };
     })(this)).on('hover', (function(_this) {
       return function(e, type) {

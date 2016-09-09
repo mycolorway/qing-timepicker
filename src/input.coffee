@@ -33,6 +33,7 @@ class Input extends QingModule
     $ '<li><span class="value"></span></li>'
       .attr 'data-type', type
       .appendTo @timeWrapper
+    $('<li class="divider">:</li>').appendTo @timeWrapper
 
   _bind: ->
     @el.on 'click', (e) =>

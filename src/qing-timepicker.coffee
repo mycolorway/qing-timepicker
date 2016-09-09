@@ -76,9 +76,12 @@ class QingTimepicker extends QingModule
       @clear()
 
     @popover
-      .on 'show', (e) =>
+      .on 'show', =>
         @popover.setPosition
           top: @input.el.outerHeight() + 6
+      .on 'hide', =>
+        @input.removeHighlight()
+        @input.setActive false
       .on 'hover', (e, type) =>
         @input.highlight type if @time
       .on 'mouseout', =>
