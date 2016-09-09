@@ -17,6 +17,8 @@ class QingTimepicker extends QingModule
     unless @el.length > 0
       throw new Error 'QingTimepicker: option el is required'
 
+    return initialized if (initialized = @el.data('qingTimepicker'))
+
     @opts = $.extend {}, QingTimepicker.opts, @opts
     @id = ++ QingTimepicker.count
     @_render()
@@ -72,12 +74,11 @@ class QingTimepicker extends QingModule
         @input.setActive false
 
       @clear()
-      @trigger 'clear'
 
     @popover
       .on 'show', (e) =>
         @popover.setPosition
-          top: @input.el.outerHeight() + 2
+          top: @input.el.outerHeight() + 6
       .on 'hover', (e, type) =>
         @input.highlight type if @time
       .on 'mouseout', =>

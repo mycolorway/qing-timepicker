@@ -144,6 +144,7 @@ Popover = (function(superClass) {
     this.wrapper = $(this.opts.wrapper);
     this.active = false;
     this.selectors = [];
+    this.time = moment();
     this._render();
     this._initChildComponents();
     this._bind();
@@ -192,7 +193,7 @@ Popover = (function(superClass) {
   };
 
   Popover.prototype.setTime = function(time) {
-    if (!this.time || !this.time.isSame(time)) {
+    if (time && !(this.time && this.time.isSame(time))) {
       this.time = time;
       return this.selectors.forEach((function(_this) {
         return function(selector) {
@@ -239,7 +240,6 @@ SelectView = (function(superClass) {
 
   SelectView.opts = {
     wrapper: null,
-    selectedIndex: 0,
     type: 'hour'
   };
 
@@ -367,10 +367,14 @@ QingTimepicker = (function(superClass) {
   QingTimepicker.count = 0;
 
   function QingTimepicker(opts) {
+    var initialized;
     QingTimepicker.__super__.constructor.apply(this, arguments);
     this.el = $(this.opts.el);
     if (!(this.el.length > 0)) {
       throw new Error('QingTimepicker: option el is required');
+    }
+    if ((initialized = this.el.data('qingTimepicker'))) {
+      return initialized;
     }
     this.opts = $.extend({}, QingTimepicker.opts, this.opts);
     this.id = ++QingTimepicker.count;
@@ -431,14 +435,13 @@ QingTimepicker = (function(superClass) {
           _this.popover.setActive(false);
           _this.input.setActive(false);
         }
-        _this.clear();
-        return _this.trigger('clear');
+        return _this.clear();
       };
     })(this));
     return this.popover.on('show', (function(_this) {
       return function(e) {
         return _this.popover.setPosition({
-          top: _this.input.el.outerHeight() + 2
+          top: _this.input.el.outerHeight() + 6
         });
       };
     })(this)).on('hover', (function(_this) {

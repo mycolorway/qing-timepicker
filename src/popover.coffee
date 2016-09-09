@@ -13,6 +13,7 @@ class Popover extends QingModule
     @wrapper = $ @opts.wrapper
     @active = false
     @selectors = []
+    @time = moment()
 
     @_render()
     @_initChildComponents()
@@ -47,7 +48,7 @@ class Popover extends QingModule
       e.stopImmediatePropagation()
 
   setTime: (time) =>
-    if !@time || !@time.isSame(time)
+    if time && !(@time && @time.isSame(time))
       @time = time
       @selectors.forEach (selector) =>
         selector.select @time[selector.type]()

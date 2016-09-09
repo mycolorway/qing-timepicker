@@ -71,10 +71,6 @@ __change__ (event)
 
 Triggered when current selected time is changed.
 
-__clear__ (event)
-
-Triggered when current selected time is cleared.
-
 ## Installation
 
 Install via npm:

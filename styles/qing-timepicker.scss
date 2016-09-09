@@ -83,6 +83,10 @@ $list-height: $item-height * 6;
     &.active {
       display: inline;
     }
+
+    &:hover {
+      color: darken($color: #bfbfbf, $amount: 30%)
+    }
   }
 
   .popover {

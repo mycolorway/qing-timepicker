@@ -1,7 +1,6 @@
 class SelectView extends QingModule
   @opts:
     wrapper: null
-    selectedIndex: 0
     type: 'hour'
 
   constructor: (opts) ->

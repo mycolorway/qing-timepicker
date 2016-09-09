@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-timepicker/license.html
  *
- * Date: 2016-09-8
+ * Date: 2016-09-9
  */
 .qing-timepicker {
   position: relative;
@@ -62,6 +62,8 @@
     text-decoration: none; }
     .qing-timepicker .clear-button.active {
       display: inline; }
+    .qing-timepicker .clear-button:hover {
+      color: #737373; }
   .qing-timepicker .popover {
     display: none;
     padding: 0;
