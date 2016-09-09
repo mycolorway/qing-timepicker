@@ -35,7 +35,7 @@ class QingTimepicker extends QingModule
       .data 'qingTimepicker', @
       .insertBefore @el
       .append @el
-    @clearButton = $ '<a href="javascript:;" class="clear-button">x</a>'
+    @clearButton = $ '<a href="javascript:;" class="clear-button">&times;</a>'
       .appendTo @wrapper
     @el.hide()
       .data 'qingTimepicker', @
@@ -88,7 +88,6 @@ class QingTimepicker extends QingModule
         @input.removeHighlight()
       .on 'select', (e, time) =>
         @setTime time
-        @clearButton.addClass 'active'
 
   setTime: (time) ->
     parsed =
@@ -99,6 +98,7 @@ class QingTimepicker extends QingModule
 
       @input.setValue @time
       @el.val formattedTime
+      @clearButton.addClass 'active'
       @trigger 'change', [formattedTime]
 
   getTime: ->

@@ -393,7 +393,7 @@ QingTimepicker = (function(superClass) {
 
   QingTimepicker.prototype._render = function() {
     this.wrapper = $('<div class="qing-timepicker"></div>').data('qingTimepicker', this).insertBefore(this.el).append(this.el);
-    this.clearButton = $('<a href="javascript:;" class="clear-button">x</a>').appendTo(this.wrapper);
+    this.clearButton = $('<a href="javascript:;" class="clear-button">&times;</a>').appendTo(this.wrapper);
     return this.el.hide().data('qingTimepicker', this);
   };
 
@@ -465,8 +465,7 @@ QingTimepicker = (function(superClass) {
       };
     })(this)).on('select', (function(_this) {
       return function(e, time) {
-        _this.setTime(time);
-        return _this.clearButton.addClass('active');
+        return _this.setTime(time);
       };
     })(this));
   };
@@ -479,6 +478,7 @@ QingTimepicker = (function(superClass) {
       this.time = parsed.clone();
       this.input.setValue(this.time);
       this.el.val(formattedTime);
+      this.clearButton.addClass('active');
       return this.trigger('change', [formattedTime]);
     }
   };

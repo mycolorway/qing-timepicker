@@ -85,7 +85,6 @@ describe 'QingTimepicker', ->
     spy = sinon.spy(qingTimepicker, 'setTime')
     popover.trigger 'select', moment()
     expect(spy.called).to.be.true
-    expect(qingTimepicker.clearButton.hasClass('active')).to.be.true
 
     spy = sinon.spy(input, 'highlight')
     qingTimepicker.time = null

@@ -60,13 +60,14 @@
     right: 0;
     width: 30px;
     line-height: 38px;
+    font-size: 20px;
     color: #bfbfbf;
     text-align: center;
     text-decoration: none; }
     .qing-timepicker .clear-button.active {
       display: inline; }
     .qing-timepicker .clear-button:hover {
-      color: #737373; }
+      color: #8c8c8c; }
   .qing-timepicker .popover {
     display: none;
     padding: 0;
@@ -78,7 +79,8 @@
     top: 0;
     left: 0;
     font-size: 14px;
-    color: #4A4A4A; }
+    color: #4A4A4A;
+    z-index: 999; }
     .qing-timepicker .popover.active {
       display: flex;
       justify-content: space-between; }
