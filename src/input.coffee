@@ -1,3 +1,5 @@
+util = require './util.coffee'
+
 class Input extends QingModule
 
   @opts:
@@ -9,7 +11,7 @@ class Input extends QingModule
 
   constructor: (opts) ->
     super
-    @opts = $.extend {}, Input.opts, @opts
+    $.extend @opts, Input.opts, opts
 
     @wrapper = $ @opts.wrapper
     @active = false
@@ -23,7 +25,7 @@ class Input extends QingModule
   _render: ->
     @el = $ '<div class="input"></div>'
 
-    @el.append "<div class='placeholder'>#{@opts.placeholder}</div>"
+    @el.append "<span class='placeholder'>#{@opts.placeholder}</span>"
     @timeWrapper = $ '<ul class="time-wrapper"></ul>'
       .appendTo @el
 
@@ -48,7 +50,7 @@ class Input extends QingModule
 
   _setItemValue: (type, time) ->
     @timeWrapper.find("[data-type='#{type}'] .value")
-      .text @_parseItemValue(time[type]())
+      .text util.parseTimeItem(time[type]())
 
   setActive: (active) ->
     @active = active
@@ -61,9 +63,6 @@ class Input extends QingModule
 
   removeHighlight: ->
     @timeWrapper.find('.value.highlight').removeClass 'highlight'
-
-  _parseItemValue: (value) ->
-    if value < 10 then "0#{value}" else value.toString()
 
   destroy: ->
     @el.remove()

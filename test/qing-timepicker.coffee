@@ -128,6 +128,7 @@ describe 'QingTimepicker', ->
     expect(spy.calledWithNew()).to.be.true
     expect(spy.threw()).to.be.true
 
+require './util.coffee'
 require './select-view.coffee'
 require './popover.coffee'
 require './input.coffee'

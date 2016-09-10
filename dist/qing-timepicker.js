@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-timepicker/license.html
  *
- * Date: 2016-09-9
+ * Date: 2016-09-10
  */
 ;(function(root, factory) {
   if (typeof module === 'object' && module.exports) {
@@ -17,9 +17,11 @@
 }(this, function ($,QingModule) {
 var define, module, exports;
 var b = require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var Input,
+var Input, util,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
+
+util = require('./util.coffee');
 
 Input = (function(superClass) {
   extend(Input, superClass);
@@ -34,7 +36,7 @@ Input = (function(superClass) {
 
   function Input(opts) {
     Input.__super__.constructor.apply(this, arguments);
-    this.opts = $.extend({}, Input.opts, this.opts);
+    $.extend(this.opts, Input.opts, opts);
     this.wrapper = $(this.opts.wrapper);
     this.active = false;
     this._render();
@@ -52,7 +54,7 @@ Input = (function(superClass) {
 
   Input.prototype._render = function() {
     this.el = $('<div class="input"></div>');
-    this.el.append("<div class='placeholder'>" + this.opts.placeholder + "</div>");
+    this.el.append("<span class='placeholder'>" + this.opts.placeholder + "</span>");
     this.timeWrapper = $('<ul class="time-wrapper"></ul>').appendTo(this.el);
     return this.el.appendTo(this.wrapper);
   };
@@ -84,7 +86,7 @@ Input = (function(superClass) {
   };
 
   Input.prototype._setItemValue = function(type, time) {
-    return this.timeWrapper.find("[data-type='" + type + "'] .value").text(this._parseItemValue(time[type]()));
+    return this.timeWrapper.find("[data-type='" + type + "'] .value").text(util.parseTimeItem(time[type]()));
   };
 
   Input.prototype.setActive = function(active) {
@@ -102,14 +104,6 @@ Input = (function(superClass) {
     return this.timeWrapper.find('.value.highlight').removeClass('highlight');
   };
 
-  Input.prototype._parseItemValue = function(value) {
-    if (value < 10) {
-      return "0" + value;
-    } else {
-      return value.toString();
-    }
-  };
-
   Input.prototype.destroy = function() {
     return this.el.remove();
   };
@@ -120,7 +114,7 @@ Input = (function(superClass) {
 
 module.exports = Input;
 
-},{}],2:[function(require,module,exports){
+},{"./util.coffee":4}],2:[function(require,module,exports){
 var Popover, SelectView,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -141,7 +135,7 @@ Popover = (function(superClass) {
   function Popover(opts) {
     this.setTime = bind(this.setTime, this);
     Popover.__super__.constructor.apply(this, arguments);
-    this.opts = $.extend({}, Popover.opts, this.opts);
+    $.extend(this.opts, Popover.opts, opts);
     this.wrapper = $(this.opts.wrapper);
     this.active = false;
     this.selectors = [];
@@ -235,9 +229,11 @@ Popover = (function(superClass) {
 module.exports = Popover;
 
 },{"./select-view.coffee":3}],3:[function(require,module,exports){
-var SelectView,
+var SelectView, util,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
+
+util = require('./util.coffee');
 
 SelectView = (function(superClass) {
   extend(SelectView, superClass);
@@ -249,7 +245,7 @@ SelectView = (function(superClass) {
 
   function SelectView(opts) {
     SelectView.__super__.constructor.apply(this, arguments);
-    this.opts = $.extend({}, SelectView.opts, this.opts);
+    $.extend(this.opts, SelectView.opts, opts);
     this.wrapper = $(this.opts.wrapper);
     this.type = this.opts.type;
     this.items = this._generateItems();
@@ -296,26 +292,18 @@ SelectView = (function(superClass) {
       return results;
     }).apply(this).map((function(_this) {
       return function(item) {
-        return _this._parseValue(item);
+        return util.parseTimeItem(item);
       };
     })(this));
   };
 
   SelectView.prototype.select = function(value) {
-    value = this._parseValue(value);
+    value = util.parseTimeItem(value);
     if (this.selectedValue !== value) {
       this.selectedValue = value;
       this.selectedItem = this.list.find('li').get(this.items.indexOf(value));
       this.list.find('li.selected').removeClass('selected');
       return $(this.selectedItem).addClass('selected');
-    }
-  };
-
-  SelectView.prototype._parseValue = function(value) {
-    if (value < 10) {
-      return "0" + value;
-    } else {
-      return value.toString();
     }
   };
 
@@ -350,14 +338,57 @@ SelectView = (function(superClass) {
 
 module.exports = SelectView;
 
+},{"./util.coffee":4}],4:[function(require,module,exports){
+var api, parseDate, parseTimeItem, raw;
+
+raw = function(date, format) {
+  if (typeof date === 'string') {
+    return moment(date, format);
+  }
+  if (Object.prototype.toString.call(date) === '[object Date]') {
+    return moment(date);
+  }
+  if (moment.isMoment(date)) {
+    return date.clone();
+  }
+};
+
+parseDate = function(date, format) {
+  var parsed;
+  format = typeof format === 'string' ? format : null;
+  parsed = raw(date, format);
+  if (parsed && parsed.isValid()) {
+    return parsed;
+  }
+  return null;
+};
+
+parseTimeItem = function(value) {
+  value = typeof value === 'string' ? parseInt(value, 10) : value;
+  if (value < 10) {
+    return "0" + value;
+  } else {
+    return value.toString();
+  }
+};
+
+api = {
+  parseDate: parseDate,
+  parseTimeItem: parseTimeItem
+};
+
+module.exports = api;
+
 },{}],"qing-timepicker":[function(require,module,exports){
-var Input, Popover, QingTimepicker, extractChildComponentOpts,
+var Input, Popover, QingTimepicker, extractChildComponentOpts, util,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
 Input = require('./input.coffee');
 
 Popover = require('./popover.coffee');
+
+util = require('./util.coffee');
 
 QingTimepicker = (function(superClass) {
   extend(QingTimepicker, superClass);
@@ -380,7 +411,7 @@ QingTimepicker = (function(superClass) {
     if ((initialized = this.el.data('qingTimepicker'))) {
       return initialized;
     }
-    this.opts = $.extend({}, QingTimepicker.opts, this.opts);
+    $.extend(this.opts, QingTimepicker.opts, opts);
     this.id = ++QingTimepicker.count;
     this._render();
     this._initChildComponents();
@@ -388,7 +419,7 @@ QingTimepicker = (function(superClass) {
     if ($.isFunction(this.opts.renderer)) {
       this.opts.renderer.call(this, this.wrapper, this);
     }
-    this.setTime(moment(this.el.val(), this.opts.format, true));
+    this.setTime(this.el.val());
   }
 
   QingTimepicker.prototype._render = function() {
@@ -472,10 +503,10 @@ QingTimepicker = (function(superClass) {
 
   QingTimepicker.prototype.setTime = function(time) {
     var formattedTime, parsed;
-    parsed = moment.isMoment(time) ? time : moment(time, this.opts.format, true);
-    if (parsed.isValid() && !parsed.isSame(this.time)) {
+    parsed = util.parseDate(time, this.opts.format);
+    if (parsed && !parsed.isSame(this.time)) {
       formattedTime = parsed.format(this.opts.format);
-      this.time = parsed.clone();
+      this.time = parsed;
       this.input.setValue(this.time);
       this.el.val(formattedTime);
       this.clearButton.addClass('active');
@@ -525,7 +556,7 @@ extractChildComponentOpts = function(format) {
 
 module.exports = QingTimepicker;
 
-},{"./input.coffee":1,"./popover.coffee":2}]},{},[]);
+},{"./input.coffee":1,"./popover.coffee":2,"./util.coffee":4}]},{},[]);
 
 return b('qing-timepicker');
 }));

@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-timepicker/license.html
  *
- * Date: 2016-09-9
+ * Date: 2016-09-10
  */
 .qing-timepicker {
   position: relative;
@@ -26,9 +26,8 @@
       padding-right: 30px; }
       .qing-timepicker .input.selected .placeholder {
         display: none; }
-      .qing-timepicker .input.selected .time-wrapper {
-        display: inline-flex;
-        justify-content: space-around;
+      .qing-timepicker .input.selected ul.time-wrapper {
+        display: flex;
         align-items: center; }
     .qing-timepicker .input .placeholder {
       color: #dfdfdf; }
@@ -41,10 +40,11 @@
       .qing-timepicker .input ul.time-wrapper li {
         list-style: none;
         margin: 0;
-        padding: 0; }
+        padding: 0;
+        display: inline-block; }
         .qing-timepicker .input ul.time-wrapper li .value {
           display: block;
-          padding: 0 5px;
+          padding: 0 3px;
           height: 24px;
           line-height: 24px;
           text-align: center; }

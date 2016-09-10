@@ -1,5 +1,6 @@
 Input = require './input.coffee'
 Popover = require './popover.coffee'
+util = require './util.coffee'
 
 class QingTimepicker extends QingModule
 
@@ -19,7 +20,7 @@ class QingTimepicker extends QingModule
 
     return initialized if (initialized = @el.data('qingTimepicker'))
 
-    @opts = $.extend {}, QingTimepicker.opts, @opts
+    $.extend @opts, QingTimepicker.opts, opts
     @id = ++ QingTimepicker.count
     @_render()
     @_initChildComponents()
@@ -28,7 +29,7 @@ class QingTimepicker extends QingModule
     if $.isFunction @opts.renderer
       @opts.renderer.call @, @wrapper, @
 
-    @setTime moment(@el.val(), @opts.format, true)
+    @setTime @el.val()
 
   _render: ->
     @wrapper = $ '<div class="qing-timepicker"></div>'
@@ -90,11 +91,10 @@ class QingTimepicker extends QingModule
         @setTime time
 
   setTime: (time) ->
-    parsed =
-      if moment.isMoment(time) then time else moment(time, @opts.format, true)
-    if parsed.isValid() && !parsed.isSame(@time)
+    parsed = util.parseDate time, @opts.format
+    if parsed && !parsed.isSame(@time)
       formattedTime = parsed.format(@opts.format)
-      @time = parsed.clone()
+      @time = parsed
 
       @input.setValue @time
       @el.val formattedTime

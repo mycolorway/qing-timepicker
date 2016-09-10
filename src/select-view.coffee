@@ -1,3 +1,5 @@
+util = require './util.coffee'
+
 class SelectView extends QingModule
   @opts:
     wrapper: null
@@ -5,7 +7,8 @@ class SelectView extends QingModule
 
   constructor: (opts) ->
     super
-    @opts = $.extend {}, SelectView.opts, @opts
+    $.extend @opts, SelectView.opts, opts
+
     @wrapper = $ @opts.wrapper
     @type = @opts.type
     @items = @_generateItems()
@@ -36,19 +39,16 @@ class SelectView extends QingModule
 
   _generateItems: ->
     length = if @type is 'hour' then 24 else 60
-    [0...length].map (item) => @_parseValue(item)
+    [0...length].map (item) => util.parseTimeItem(item)
 
   select: (value) ->
-    value = @_parseValue value
+    value = util.parseTimeItem value
     if @selectedValue != value
       @selectedValue = value
       @selectedItem = @list.find('li').get @items.indexOf(value)
 
       @list.find('li.selected').removeClass 'selected'
       $(@selectedItem).addClass 'selected'
-
-  _parseValue: (value) ->
-    if value < 10 then "0#{value}" else value.toString()
 
   scrollToSelected: (duration) ->
     @_scrollTo @el[0], @selectedItem.offsetTop, duration if @selectedItem

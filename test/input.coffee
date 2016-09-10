@@ -1,4 +1,5 @@
 Input = require '../src/input.coffee'
+util = require '../src/util.coffee'
 expect = chai.expect
 
 describe 'Input', ->
@@ -53,7 +54,7 @@ describe 'Input', ->
     itemValue = input.timeWrapper.find('[data-type="hour"] .value').text()
 
     expect(input.el.hasClass('selected')).to.be.true
-    expect(itemValue).to.equal input._parseItemValue(time.hour())
+    expect(itemValue).to.equal util.parseTimeItem(time.hour())
 
     input.setValue null
     expect(input.el.hasClass('selected')).to.be.not.true
