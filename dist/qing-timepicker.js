@@ -1,5 +1,5 @@
 /**
- * qing-timepicker v1.0.0
+ * qing-timepicker v1.0.1
  * http://mycolorway.github.io/qing-timepicker
  *
  * Copyright Mycolorway Design

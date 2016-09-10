@@ -43,19 +43,18 @@ $list-height: $item-height * 6;
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      height: 100%;
 
       li {
         list-style: none;
         margin: 0;
         padding: 0;
-        display: inline-block;
+        display: block;
+        line-height: 1;
 
         .value {
           display: block;
-          padding: 0 3px;
-          height: 24px;
-          line-height: 24px;
-          text-align: center;
+          padding: 3px;
         }
 
         .value.highlight {
@@ -76,15 +75,17 @@ $list-height: $item-height * 6;
     display: none;
     position: absolute;
     right: 0;
+    top: 0;
+    bottom: 0;
     width: 30px;
     line-height: 38px;
-    font-size: 20px;
+    font-size: 18px;
     color: #bfbfbf;
     text-align: center;
     text-decoration: none;
 
     &.active {
-      display: inline;
+      display: block;
     }
 
     &:hover {
