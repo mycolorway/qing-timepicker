@@ -50,7 +50,7 @@ $list-height: $item-height * 6;
         margin: 0;
         padding: 0;
         display: block;
-        line-height: 1;
+        line-height: normal;
 
         .value {
           display: block;
@@ -78,14 +78,15 @@ $list-height: $item-height * 6;
     top: 0;
     bottom: 0;
     width: 30px;
-    line-height: 38px;
     font-size: 18px;
     color: #bfbfbf;
     text-align: center;
     text-decoration: none;
 
     &.active {
-      display: block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     &:hover {
