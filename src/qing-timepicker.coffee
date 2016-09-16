@@ -38,6 +38,7 @@ class QingTimepicker extends QingModule
       .insertBefore @el
       .append @el
     @clearButton = $ '<a href="javascript:;" class="clear-button">&times;</a>'
+      .attr 'tabindex', -1
       .appendTo @wrapper
     @el.hide()
       .data 'qingTimepicker', @

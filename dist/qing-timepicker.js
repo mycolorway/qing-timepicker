@@ -445,7 +445,7 @@ QingTimepicker = (function(superClass) {
 
   QingTimepicker.prototype._render = function() {
     this.wrapper = $('<div class="qing-timepicker"></div>').data('qingTimepicker', this).insertBefore(this.el).append(this.el);
-    this.clearButton = $('<a href="javascript:;" class="clear-button">&times;</a>').appendTo(this.wrapper);
+    this.clearButton = $('<a href="javascript:;" class="clear-button">&times;</a>').attr('tabindex', -1).appendTo(this.wrapper);
     return this.el.hide().data('qingTimepicker', this);
   };
 
