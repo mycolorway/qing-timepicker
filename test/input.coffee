@@ -41,11 +41,29 @@ describe 'Input', ->
     expect(itemTypes).to.include 'minute'
     expect(itemTypes).to.not.include 'second'
 
-  it 'should trigger click event', ->
+  it 'should trigger focus or blur event when click the input el', ->
     spy = sinon.spy()
-    input.on 'click', spy
-
+    input.on 'focus', spy
     input.el.trigger 'click'
+    expect(spy.called).to.be.true
+
+    input.active = true
+    spy = sinon.spy()
+    input.on 'blur', spy
+    input.el.trigger 'click'
+    expect(spy.called).to.be.true
+
+  it 'should trigger focus event on keydown', ->
+    spy = sinon.spy()
+    input.on 'focus', spy
+    input.el.trigger $.Event('keydown', { keyCode: util.ENTER_KEY })
+    expect(spy.called).to.be.true
+
+  it 'should trigger blur event on escape', ->
+    input.active = true
+    spy = sinon.spy()
+    input.on 'blur', spy
+    input.el.trigger $.Event('keydown', { keyCode: util.ESCAPE_KEY })
     expect(spy.called).to.be.true
 
   it 'should work with setValue method', ->

@@ -21,5 +21,9 @@ parseTimeItem = (value) ->
 api =
   parseDate: parseDate
   parseTimeItem: parseTimeItem
+  ENTER_KEY: 13
+  ARROW_DOWN_KEY: 40
+  ARROW_UP_KEY: 38
+  ESCAPE_KEY: 27
 
 module.exports = api

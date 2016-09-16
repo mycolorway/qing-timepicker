@@ -67,15 +67,17 @@ describe 'QingTimepicker', ->
     expect(input).to.be.ok
     expect(popover).to.be.ok
 
-  it 'should toggle popover active status when click the input', ->
-    input.trigger 'click'
+  it 'should active the popover when the input trigger focus event', ->
+    input.trigger 'focus'
     expect(popover.active).to.be.true
-    input.trigger 'click'
-    expect(popover.active).to.be.false
 
     spy = sinon.spy(popover, 'setTime')
-    input.trigger 'click'
+    input.trigger 'focus'
     expect(spy.called).to.be.true
+
+  it 'should deactive the popover when the input trigger blur event', ->
+    input.trigger 'blur'
+    expect(popover.active).to.be.false
 
   it 'should call the related method when popover events triggered', ->
     spy = sinon.spy(popover, 'setPosition')

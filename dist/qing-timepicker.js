@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-timepicker/license.html
  *
- * Date: 2016-09-14
+ * Date: 2016-09-16
  */
 ;(function(root, factory) {
   if (typeof module === 'object' && module.exports) {
@@ -53,7 +53,7 @@ Input = (function(superClass) {
   }
 
   Input.prototype._render = function() {
-    this.el = $('<div class="input"></div>');
+    this.el = $('<div class="input" tabindex="0" role="input"></div>');
     this.el.append("<span class='placeholder'>" + this.opts.placeholder + "</span>");
     this.timeWrapper = $('<ul class="time-wrapper"></ul>').appendTo(this.el);
     return this.el.appendTo(this.wrapper);
@@ -65,9 +65,21 @@ Input = (function(superClass) {
   };
 
   Input.prototype._bind = function() {
-    return this.el.on('click', (function(_this) {
+    this.el.on('click', (function(_this) {
       return function(e) {
-        return _this.trigger('click');
+        return _this.trigger(_this.active ? 'blur' : 'focus');
+      };
+    })(this));
+    return this.el.on('keydown', (function(_this) {
+      return function(e) {
+        if (~[util.ENTER_KEY, util.ARROW_UP_KEY, util.ARROW_DOWN_KEY].indexOf(e.keyCode)) {
+          if (!_this.active) {
+            _this.trigger('focus');
+          }
+        }
+        if (util.ESCAPE_KEY === e.keyCode && _this.active) {
+          return _this.trigger('blur');
+        }
       };
     })(this));
   };
@@ -92,6 +104,9 @@ Input = (function(superClass) {
   Input.prototype.setActive = function(active) {
     this.active = active;
     this.el.toggleClass('active', active);
+    if (!active) {
+      this.el.blur();
+    }
     return this.active;
   };
 
@@ -374,7 +389,11 @@ parseTimeItem = function(value) {
 
 api = {
   parseDate: parseDate,
-  parseTimeItem: parseTimeItem
+  parseTimeItem: parseTimeItem,
+  ENTER_KEY: 13,
+  ARROW_DOWN_KEY: 40,
+  ARROW_UP_KEY: 38,
+  ESCAPE_KEY: 27
 };
 
 module.exports = api;
@@ -392,6 +411,8 @@ util = require('./util.coffee');
 
 QingTimepicker = (function(superClass) {
   extend(QingTimepicker, superClass);
+
+  QingTimepicker.name = 'QingTimepicker';
 
   QingTimepicker.opts = {
     el: null,
@@ -451,17 +472,17 @@ QingTimepicker = (function(superClass) {
         return null;
       };
     })(this));
-    this.input.on('click', (function(_this) {
+    this.input.on('focus', (function(_this) {
       return function() {
         var ref;
-        if (_this.popover.active) {
-          _this.popover.setActive(false);
-          return _this.input.setActive(false);
-        } else {
-          _this.popover.setTime(((ref = _this.time) != null ? ref.clone() : void 0) || moment());
-          _this.popover.setActive(true);
-          return _this.input.setActive(true);
-        }
+        _this.popover.setTime(((ref = _this.time) != null ? ref.clone() : void 0) || moment());
+        _this.popover.setActive(true);
+        return _this.input.setActive(true);
+      };
+    })(this)).on('blur', (function(_this) {
+      return function() {
+        _this.popover.setActive(false);
+        return _this.input.setActive(false);
       };
     })(this));
     this.clearButton.on('click', (function(_this) {

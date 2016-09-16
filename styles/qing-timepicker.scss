@@ -19,6 +19,11 @@ $list-height: $item-height * 6;
     font-size: 16px;
     color: #4a4a4a;
     cursor: pointer;
+    outline: 0;
+
+    &:focus {
+      border-color: darken($color: #bfbfbf, $amount: 20%);
+    }
 
     &.selected {
       padding-right: 30px;
@@ -144,8 +149,10 @@ $list-height: $item-height * 6;
         line-height: $item-height;
         text-align: center;
         cursor: pointer;
+        outline: 0;
 
         &:hover,
+        &:focus,
         &.selected {
           background: #F6F6F6;
         }

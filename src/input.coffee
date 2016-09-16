@@ -23,7 +23,7 @@ class Input extends QingModule
     @_bind()
 
   _render: ->
-    @el = $ '<div class="input"></div>'
+    @el = $ '<div class="input" tabindex="0" role="input"></div>'
 
     @el.append "<span class='placeholder'>#{@opts.placeholder}</span>"
     @timeWrapper = $ '<ul class="time-wrapper"></ul>'
@@ -39,7 +39,14 @@ class Input extends QingModule
 
   _bind: ->
     @el.on 'click', (e) =>
-      @trigger 'click'
+      @trigger if @active then 'blur' else 'focus'
+
+    @el.on 'keydown', (e) =>
+      if ~[util.ENTER_KEY, util.ARROW_UP_KEY, util.ARROW_DOWN_KEY].indexOf(e.keyCode)
+        @trigger 'focus' unless @active
+
+      if util.ESCAPE_KEY == e.keyCode && @active
+        @trigger 'blur'
 
   setValue: (time) ->
     if time
@@ -55,6 +62,7 @@ class Input extends QingModule
   setActive: (active) ->
     @active = active
     @el.toggleClass 'active', active
+    @el.blur() unless active
     @active
 
   highlight: (type) ->

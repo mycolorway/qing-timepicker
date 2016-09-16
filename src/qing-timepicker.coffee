@@ -3,6 +3,7 @@ Popover = require './popover.coffee'
 util = require './util.coffee'
 
 class QingTimepicker extends QingModule
+  @name: 'QingTimepicker'
 
   @opts:
     el: null
@@ -60,14 +61,14 @@ class QingTimepicker extends QingModule
       @input.setActive false
       null
 
-    @input.on 'click', =>
-      if @popover.active
-        @popover.setActive false
-        @input.setActive false
-      else
+    @input
+      .on 'focus', =>
         @popover.setTime @time?.clone() || moment()
         @popover.setActive true
         @input.setActive true
+      .on 'blur', =>
+        @popover.setActive false
+        @input.setActive false
 
     @clearButton.on 'click', =>
       if @popover.active
