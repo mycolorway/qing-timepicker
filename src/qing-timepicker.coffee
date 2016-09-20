@@ -110,6 +110,7 @@ class QingTimepicker extends QingModule
     @time = null
     @input.setValue @time
     @el.val ''
+    @trigger 'change', ['']
     @clearButton.removeClass 'active'
 
   destroy: ->
