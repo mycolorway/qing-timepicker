@@ -40,14 +40,14 @@ class Input extends QingModule
 
   _bind: ->
     @el.on 'click', (e) =>
-      @trigger if @active then 'blur' else 'focus'
+      @setActive !@active
 
     @el.on 'keydown', (e) =>
       if ~[util.ENTER_KEY, util.ARROW_UP_KEY, util.ARROW_DOWN_KEY].indexOf(e.keyCode)
-        @trigger 'focus' unless @active
+        @setActive true
 
       if util.ESCAPE_KEY == e.keyCode && @active
-        @trigger 'blur'
+        @setActive false
 
   setValue: (time) ->
     if time
@@ -61,17 +61,24 @@ class Input extends QingModule
       .text util.parseTimeItem(time[type]())
 
   setActive: (active) ->
+    return if active == @active
+
     @active = active
-    @el.toggleClass 'active', active
-    @el.blur() unless active
-    @active
+    if @active
+      @el.addClass 'active'
+      @trigger 'focus'
+    else
+      @el.removeClass('active').blur()
+      @trigger 'blur'
+
+    @
 
   highlight: (type) ->
     @removeHighlight()
-    @timeWrapper.find("[data-type='#{type}'] .value").addClass 'highlight'
+    @timeWrapper.find("[data-type='#{type}'] .value").addClass 'highlighted'
 
   removeHighlight: ->
-    @timeWrapper.find('.value.highlight').removeClass 'highlight'
+    @timeWrapper.find('.value.highlighted').removeClass 'highlighted'
 
   destroy: ->
     @el.remove()

@@ -1,5 +1,5 @@
 /**
- * qing-timepicker v1.0.1
+ * qing-timepicker v1.0.2
  * http://mycolorway.github.io/qing-timepicker
  *
  * Copyright Mycolorway Design
@@ -50,7 +50,7 @@
         .qing-timepicker .input ul.time-wrapper li .value {
           display: block;
           padding: 3px; }
-        .qing-timepicker .input ul.time-wrapper li .value.highlight {
+        .qing-timepicker .input ul.time-wrapper li .value.highlighted {
           background-color: #DEEAFE; }
       .qing-timepicker .input ul.time-wrapper li.divider {
         margin: 0 3px; }
@@ -66,7 +66,8 @@
     font-size: 18px;
     color: #bfbfbf;
     text-align: center;
-    text-decoration: none; }
+    text-decoration: none;
+    outline: 0; }
     .qing-timepicker .clear-button.active {
       display: flex;
       justify-content: center;
@@ -75,7 +76,8 @@
       color: #8c8c8c; }
 
 .qing-timepicker-popover {
-  display: none;
+  display: flex;
+  justify-content: space-between;
   padding: 0;
   border: 1px solid #dddddd;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.15);
@@ -87,9 +89,6 @@
   font-size: 14px;
   color: #4A4A4A;
   z-index: 999; }
-  .qing-timepicker-popover.active {
-    display: flex;
-    justify-content: space-between; }
   .qing-timepicker-popover .select-view {
     flex: 1;
     border-left: 1px solid #eeeeee;

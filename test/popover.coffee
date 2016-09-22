@@ -14,7 +14,7 @@ describe 'Popover', ->
 
   beforeEach ->
     popover = new Popover
-      wrapper: $wrapper
+      appendTo: $wrapper
 
   afterEach ->
     $wrapper.empty()
@@ -24,13 +24,10 @@ describe 'Popover', ->
     expect(popover).to.be.instanceof QingModule
     expect(popover).to.be.instanceof Popover
 
-  it 'should append popover\'s el to the wrapper', ->
-    expect($.contains($wrapper[0], popover.el[0])).to.be.true
-
   it 'should render selectViews according to the opts', ->
     $wrapper.empty()
     popover = new Popover
-      wrapper: $wrapper
+      appendTo: $wrapper
       showSecond: false
 
     expect(popover.selectors).to.have.lengthOf 2
@@ -109,6 +106,10 @@ describe 'Popover', ->
     popover.setActive false
     expect(hideSpy.called).to.be.true
     expect(popover.el.hasClass('active')).to.be.not.true
+
+  it 'should append popover\'s el to the appendTo option el when active', ->
+    popover.setActive true
+    expect($.contains($wrapper[0], popover.el[0])).to.be.true
 
   it 'should call selector\'s scrollToSelected method when popover active', ->
     selector = popover.selectors[0]

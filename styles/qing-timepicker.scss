@@ -62,7 +62,7 @@ $list-height: $item-height * 6;
           padding: 3px;
         }
 
-        .value.highlight {
+        .value.highlighted {
           background-color: #DEEAFE;
         }
       }
@@ -87,6 +87,7 @@ $list-height: $item-height * 6;
     color: #bfbfbf;
     text-align: center;
     text-decoration: none;
+    outline: 0;
 
     &.active {
       display: flex;
@@ -101,7 +102,8 @@ $list-height: $item-height * 6;
 }
 
 .qing-timepicker-popover {
-  display: none;
+  display: flex;
+  justify-content: space-between;
   padding: 0;
   border: 1px solid #dddddd;
   box-shadow: 0 0 6px 0 rgba(0,0,0,0.15);
@@ -113,11 +115,6 @@ $list-height: $item-height * 6;
   font-size: 14px;
   color: #4A4A4A;
   z-index: 999;
-
-  &.active {
-    display: flex;
-    justify-content: space-between;
-  }
 
   .select-view {
     flex: 1;

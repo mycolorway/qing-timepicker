@@ -2,7 +2,7 @@ SelectView = require './select-view.coffee'
 
 class Popover extends QingModule
   @opts:
-    wrapper: null
+    appendTo: null
     showHour: true
     showMinute: true
     showSecond: true
@@ -12,7 +12,6 @@ class Popover extends QingModule
     $.extend @opts, Popover.opts, opts
 
   _init: ->
-    @wrapper = $ @opts.wrapper
     @active = false
     @selectors = []
     @time = moment()
@@ -23,7 +22,6 @@ class Popover extends QingModule
 
   _render: ->
     @el = $ '<div class="qing-timepicker-popover"></div>'
-      .appendTo @wrapper
 
   _initChildComponents: ->
     if @opts.showHour then @_initSelectView('hour')
@@ -56,14 +54,18 @@ class Popover extends QingModule
         selector.select @time[selector.type]()
 
   setActive: (active) ->
+    return if active == @active
+
     @active = active
-    @el.toggleClass 'active', active
     if @active
+      @el.addClass('active').appendTo @opts.appendTo
       @trigger 'show'
       @selectors.forEach (selector) -> selector.scrollToSelected()
     else
+      @el.removeClass('active').detach()
       @trigger 'hide'
-    @active
+
+    @
 
   setPosition: (position) ->
     @el.css

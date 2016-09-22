@@ -1,5 +1,5 @@
 /**
- * qing-timepicker v1.0.1
+ * qing-timepicker v1.0.2
  * http://mycolorway.github.io/qing-timepicker
  *
  * Copyright Mycolorway Design
@@ -74,18 +74,16 @@ Input = (function(superClass) {
   Input.prototype._bind = function() {
     this.el.on('click', (function(_this) {
       return function(e) {
-        return _this.trigger(_this.active ? 'blur' : 'focus');
+        return _this.setActive(!_this.active);
       };
     })(this));
     return this.el.on('keydown', (function(_this) {
       return function(e) {
         if (~[util.ENTER_KEY, util.ARROW_UP_KEY, util.ARROW_DOWN_KEY].indexOf(e.keyCode)) {
-          if (!_this.active) {
-            _this.trigger('focus');
-          }
+          _this.setActive(true);
         }
         if (util.ESCAPE_KEY === e.keyCode && _this.active) {
-          return _this.trigger('blur');
+          return _this.setActive(false);
         }
       };
     })(this));
@@ -109,21 +107,27 @@ Input = (function(superClass) {
   };
 
   Input.prototype.setActive = function(active) {
-    this.active = active;
-    this.el.toggleClass('active', active);
-    if (!active) {
-      this.el.blur();
+    if (active === this.active) {
+      return;
     }
-    return this.active;
+    this.active = active;
+    if (this.active) {
+      this.el.addClass('active');
+      this.trigger('focus');
+    } else {
+      this.el.removeClass('active').blur();
+      this.trigger('blur');
+    }
+    return this;
   };
 
   Input.prototype.highlight = function(type) {
     this.removeHighlight();
-    return this.timeWrapper.find("[data-type='" + type + "'] .value").addClass('highlight');
+    return this.timeWrapper.find("[data-type='" + type + "'] .value").addClass('highlighted');
   };
 
   Input.prototype.removeHighlight = function() {
-    return this.timeWrapper.find('.value.highlight').removeClass('highlight');
+    return this.timeWrapper.find('.value.highlighted').removeClass('highlighted');
   };
 
   Input.prototype.destroy = function() {
@@ -153,7 +157,7 @@ Popover = (function(superClass) {
   }
 
   Popover.opts = {
-    wrapper: null,
+    appendTo: null,
     showHour: true,
     showMinute: true,
     showSecond: true
@@ -165,7 +169,6 @@ Popover = (function(superClass) {
   };
 
   Popover.prototype._init = function() {
-    this.wrapper = $(this.opts.wrapper);
     this.active = false;
     this.selectors = [];
     this.time = moment();
@@ -175,7 +178,7 @@ Popover = (function(superClass) {
   };
 
   Popover.prototype._render = function() {
-    return this.el = $('<div class="qing-timepicker-popover"></div>').appendTo(this.wrapper);
+    return this.el = $('<div class="qing-timepicker-popover"></div>');
   };
 
   Popover.prototype._initChildComponents = function() {
@@ -231,17 +234,21 @@ Popover = (function(superClass) {
   };
 
   Popover.prototype.setActive = function(active) {
+    if (active === this.active) {
+      return;
+    }
     this.active = active;
-    this.el.toggleClass('active', active);
     if (this.active) {
+      this.el.addClass('active').appendTo(this.opts.appendTo);
       this.trigger('show');
       this.selectors.forEach(function(selector) {
         return selector.scrollToSelected();
       });
     } else {
+      this.el.removeClass('active').detach();
       this.trigger('hide');
     }
-    return this.active;
+    return this;
   };
 
   Popover.prototype.setPosition = function(position) {
@@ -468,7 +475,7 @@ QingTimepicker = (function(superClass) {
     }
     this.id = ++QingTimepicker.count;
     this._render();
-    this._initChildComponents();
+    this._renderChildComponents();
     this._bind();
     if ($.isFunction(this.opts.renderer)) {
       this.opts.renderer.call(this, this.wrapper, this);
@@ -482,7 +489,7 @@ QingTimepicker = (function(superClass) {
     return this.el.hide().data('qingTimepicker', this);
   };
 
-  QingTimepicker.prototype._initChildComponents = function() {
+  QingTimepicker.prototype._renderChildComponents = function() {
     var componentOpts;
     componentOpts = extractChildComponentOpts(this.opts.format);
     this.input = new Input($.extend({
@@ -490,7 +497,7 @@ QingTimepicker = (function(superClass) {
       placeholder: this.opts.placeholder || this.el.attr('placeholder') || ''
     }, componentOpts));
     return this.popover = new Popover($.extend({
-      wrapper: this.opts.appendTo && $(this.opts.appendTo) || this.wrapper
+      appendTo: this.opts.appendTo || this.wrapper
     }, componentOpts));
   };
 
@@ -504,7 +511,6 @@ QingTimepicker = (function(superClass) {
           return;
         }
         _this.popover.setActive(false);
-        _this.input.setActive(false);
         return null;
       };
     })(this));
@@ -512,20 +518,17 @@ QingTimepicker = (function(superClass) {
       return function() {
         var ref;
         _this.popover.setTime(((ref = _this.time) != null ? ref.clone() : void 0) || moment());
-        _this.popover.setActive(true);
-        return _this.input.setActive(true);
+        return _this.popover.setActive(true);
       };
     })(this)).on('blur', (function(_this) {
       return function() {
-        _this.popover.setActive(false);
-        return _this.input.setActive(false);
+        return _this.popover.setActive(false);
       };
     })(this));
     this.clearButton.on('click', (function(_this) {
       return function() {
         if (_this.popover.active) {
           _this.popover.setActive(false);
-          _this.input.setActive(false);
         }
         return _this.clear();
       };
@@ -536,8 +539,8 @@ QingTimepicker = (function(superClass) {
       };
     })(this)).on('hide', (function(_this) {
       return function() {
-        _this.input.removeHighlight();
-        return _this.input.setActive(false);
+        _this.input.setActive(false);
+        return _this.input.removeHighlight();
       };
     })(this)).on('hover', (function(_this) {
       return function(e, type) {
@@ -599,8 +602,11 @@ QingTimepicker = (function(superClass) {
   };
 
   QingTimepicker.prototype.destroy = function() {
+    var ref;
     this.el.insertAfter(this.wrapper).show().removeData('qingTimepicker');
-    this.popover.destroy();
+    if ((ref = this.popover) != null) {
+      ref.destroy();
+    }
     this.wrapper.remove();
     return $(document).off(".qing-timepicker-" + this.id);
   };

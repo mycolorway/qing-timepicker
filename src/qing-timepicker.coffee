@@ -26,7 +26,7 @@ class QingTimepicker extends QingModule
 
     @id = ++ QingTimepicker.count
     @_render()
-    @_initChildComponents()
+    @_renderChildComponents()
     @_bind()
 
     if $.isFunction @opts.renderer
@@ -45,7 +45,7 @@ class QingTimepicker extends QingModule
     @el.hide()
       .data 'qingTimepicker', @
 
-  _initChildComponents: ->
+  _renderChildComponents: ->
     componentOpts = extractChildComponentOpts @opts.format
 
     @input = new Input $.extend
@@ -54,7 +54,7 @@ class QingTimepicker extends QingModule
     , componentOpts
 
     @popover = new Popover $.extend
-      wrapper: @opts.appendTo && $(@opts.appendTo) || @wrapper
+      appendTo: @opts.appendTo || @wrapper
     , componentOpts
 
   _bind: ->
@@ -62,31 +62,25 @@ class QingTimepicker extends QingModule
       return if $.contains(@wrapper[0], e.target)
       return if $.contains(@popover.el[0], e.target)
       @popover.setActive false
-      @input.setActive false
       null
 
     @input
       .on 'focus', =>
         @popover.setTime @time?.clone() || moment()
         @popover.setActive true
-        @input.setActive true
       .on 'blur', =>
         @popover.setActive false
-        @input.setActive false
 
     @clearButton.on 'click', =>
-      if @popover.active
-        @popover.setActive false
-        @input.setActive false
-
+      @popover.setActive false if @popover.active
       @clear()
 
     @popover
       .on 'show', =>
         @_updatePopoverPosition()
       .on 'hide', =>
-        @input.removeHighlight()
         @input.setActive false
+        @input.removeHighlight()
       .on 'hover', (e, type) =>
         @input.highlight type if @time
       .on 'mouseout', =>
@@ -131,7 +125,7 @@ class QingTimepicker extends QingModule
     @el.insertAfter @wrapper
       .show()
       .removeData 'qingTimepicker'
-    @popover.destroy()
+    @popover?.destroy()
     @wrapper.remove()
     $(document).off ".qing-timepicker-#{@id}"
 

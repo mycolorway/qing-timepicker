@@ -1,4 +1,8 @@
 
+### V1.0.2 - 2016-09-22
+
+* Add `appendTo` option.
+
 ### V1.0.1 - 2016-09-10
 
 * Fix bug if the selected value is less than 10.

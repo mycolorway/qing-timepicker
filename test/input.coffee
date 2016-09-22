@@ -87,8 +87,8 @@ describe 'Input', ->
   it 'should highlight the item\'s value with the given type', ->
     $item = input.timeWrapper.find('[data-type="hour"] .value')
     input.highlight 'hour'
-    expect($item.hasClass('highlight')).to.be.true
+    expect($item.hasClass('highlighted')).to.be.true
 
     input.removeHighlight()
     $item = input.timeWrapper.find('[data-type="hour"] .value')
-    expect($item.hasClass('highlight')).to.be.false
+    expect($item.hasClass('highlighted')).to.be.false
