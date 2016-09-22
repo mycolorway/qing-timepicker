@@ -9,19 +9,21 @@ class QingTimepicker extends QingModule
     el: null
     format: 'HH:mm:ss'
     renderer: null
+    appendTo: null
 
   @count: 0
 
-  constructor: (opts) ->
+  _setOptions: (opts) ->
     super
+    $.extend @opts, QingTimepicker.opts, opts
 
+  _init: ->
     @el = $ @opts.el
     unless @el.length > 0
       throw new Error 'QingTimepicker: option el is required'
 
     return initialized if (initialized = @el.data('qingTimepicker'))
 
-    $.extend @opts, QingTimepicker.opts, opts
     @id = ++ QingTimepicker.count
     @_render()
     @_initChildComponents()
@@ -52,12 +54,13 @@ class QingTimepicker extends QingModule
     , componentOpts
 
     @popover = new Popover $.extend
-      wrapper: @wrapper
+      wrapper: @opts.appendTo && $(@opts.appendTo) || @wrapper
     , componentOpts
 
   _bind: ->
     $(document).on "click.qing-timepicker-#{@id}", (e) =>
-      return if $.contains @wrapper[0], e.target
+      return if $.contains(@wrapper[0], e.target)
+      return if $.contains(@popover.el[0], e.target)
       @popover.setActive false
       @input.setActive false
       null
@@ -80,8 +83,7 @@ class QingTimepicker extends QingModule
 
     @popover
       .on 'show', =>
-        @popover.setPosition
-          top: @input.el.outerHeight() + 6
+        @_updatePopoverPosition()
       .on 'hide', =>
         @input.removeHighlight()
         @input.setActive false
@@ -91,6 +93,18 @@ class QingTimepicker extends QingModule
         @input.removeHighlight()
       .on 'select', (e, time) =>
         @setTime time
+
+  _updatePopoverPosition: ->
+    if @opts.appendTo
+      position = @wrapper.position()
+      pos =
+        top: position.top + @input.el.outerHeight() + 6
+        left: position.left
+    else
+      pos =
+        top: @input.el.outerHeight() + 6
+
+    @popover.setPosition pos
 
   setTime: (time) ->
     parsed = util.parseDate time, @opts.format
@@ -117,6 +131,7 @@ class QingTimepicker extends QingModule
     @el.insertAfter @wrapper
       .show()
       .removeData 'qingTimepicker'
+    @popover.destroy()
     @wrapper.remove()
     $(document).off ".qing-timepicker-#{@id}"
 

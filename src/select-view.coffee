@@ -5,10 +5,11 @@ class SelectView extends QingModule
     wrapper: null
     type: 'hour'
 
-  constructor: (opts) ->
+  _setOptions: (opts) ->
     super
     $.extend @opts, SelectView.opts, opts
 
+  _init: ->
     @wrapper = $ @opts.wrapper
     @type = @opts.type
     @items = @_generateItems()

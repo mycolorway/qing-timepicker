@@ -7,10 +7,11 @@ class Popover extends QingModule
     showMinute: true
     showSecond: true
 
-  constructor: (opts) ->
+  _setOptions: (opts) ->
     super
     $.extend @opts, Popover.opts, opts
 
+  _init: ->
     @wrapper = $ @opts.wrapper
     @active = false
     @selectors = []
@@ -21,7 +22,7 @@ class Popover extends QingModule
     @_bind()
 
   _render: ->
-    @el = $ '<div class="popover"></div>'
+    @el = $ '<div class="qing-timepicker-popover"></div>'
       .appendTo @wrapper
 
   _initChildComponents: ->
@@ -68,5 +69,8 @@ class Popover extends QingModule
     @el.css
       top: position.top
       left: position.left || 0
+
+  destroy: ->
+    @el.remove()
 
 module.exports = Popover

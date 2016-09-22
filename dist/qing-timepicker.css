@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-timepicker/license.html
  *
- * Date: 2016-09-16
+ * Date: 2016-09-22
  */
 .qing-timepicker {
   position: relative;
@@ -73,38 +73,39 @@
       align-items: center; }
     .qing-timepicker .clear-button:hover {
       color: #8c8c8c; }
-  .qing-timepicker .popover {
-    display: none;
-    padding: 0;
-    border: 1px solid #dddddd;
-    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.15);
-    border-radius: 2px;
-    background: #ffffff;
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 14px;
-    color: #4A4A4A;
-    z-index: 999; }
-    .qing-timepicker .popover.active {
-      display: flex;
-      justify-content: space-between; }
-  .qing-timepicker .select-view {
+
+.qing-timepicker-popover {
+  display: none;
+  padding: 0;
+  border: 1px solid #dddddd;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+  background: #ffffff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 14px;
+  color: #4A4A4A;
+  z-index: 999; }
+  .qing-timepicker-popover.active {
+    display: flex;
+    justify-content: space-between; }
+  .qing-timepicker-popover .select-view {
     flex: 1;
     border-left: 1px solid #eeeeee;
     width: 70px;
     overflow: hidden; }
-    .qing-timepicker .select-view:hover {
+    .qing-timepicker-popover .select-view:hover {
       overflow-y: auto; }
-    .qing-timepicker .select-view:first-child {
+    .qing-timepicker-popover .select-view:first-child {
       border-width: 0; }
-    .qing-timepicker .select-view ul {
+    .qing-timepicker-popover .select-view ul {
       list-style: none;
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       max-height: 240px; }
-      .qing-timepicker .select-view ul li {
+      .qing-timepicker-popover .select-view ul li {
         list-style: none;
         box-sizing: content-box;
         margin: 0;
@@ -114,11 +115,11 @@
         text-align: center;
         cursor: pointer;
         outline: 0; }
-        .qing-timepicker .select-view ul li:hover, .qing-timepicker .select-view ul li:focus, .qing-timepicker .select-view ul li.selected {
+        .qing-timepicker-popover .select-view ul li:hover, .qing-timepicker-popover .select-view ul li:focus, .qing-timepicker-popover .select-view ul li.selected {
           background: #F6F6F6; }
-        .qing-timepicker .select-view ul li.selected {
+        .qing-timepicker-popover .select-view ul li.selected {
           font-weight: bold; }
-        .qing-timepicker .select-view ul li:last-child:after {
+        .qing-timepicker-popover .select-view ul li:last-child:after {
           content: '';
           height: 200px;
           display: block; }

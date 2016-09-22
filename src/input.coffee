@@ -9,10 +9,11 @@ class Input extends QingModule
     showSecond: true
     placeholder: ''
 
-  constructor: (opts) ->
+  _setOptions: (opts) ->
     super
     $.extend @opts, Input.opts, opts
 
+  _init: ->
     @wrapper = $ @opts.wrapper
     @active = false
 

@@ -20,7 +20,7 @@
   "dependencies": {
     "jquery": "^3.1.0",
     "moment": "^2.14.1",
-    "qing-module": "~1.0.0"
+    "qing-module": "~1.0.1"
   },
   "devDependencies": {
     "qing-build": "^0.x"

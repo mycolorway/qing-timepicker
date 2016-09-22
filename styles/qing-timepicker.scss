@@ -98,25 +98,25 @@ $list-height: $item-height * 6;
       color: darken($color: #bfbfbf, $amount: 20%)
     }
   }
+}
 
-  .popover {
-    display: none;
-    padding: 0;
-    border: 1px solid #dddddd;
-    box-shadow: 0 0 6px 0 rgba(0,0,0,0.15);
-    border-radius: 2px;
-    background: #ffffff;
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 14px;
-    color: #4A4A4A;
-    z-index: 999;
+.qing-timepicker-popover {
+  display: none;
+  padding: 0;
+  border: 1px solid #dddddd;
+  box-shadow: 0 0 6px 0 rgba(0,0,0,0.15);
+  border-radius: 2px;
+  background: #ffffff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 14px;
+  color: #4A4A4A;
+  z-index: 999;
 
-    &.active {
-      display: flex;
-      justify-content: space-between;
-    }
+  &.active {
+    display: flex;
+    justify-content: space-between;
   }
 
   .select-view {
