@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-timepicker/license.html
  *
- * Date: 2016-09-22
+ * Date: 2016-10-8
  */
 ;(function(root, factory) {
   if (typeof module === 'object' && module.exports) {
@@ -113,12 +113,11 @@ Input = (function(superClass) {
     this.active = active;
     if (this.active) {
       this.el.addClass('active');
-      this.trigger('focus');
+      return this.trigger('focus');
     } else {
       this.el.removeClass('active').blur();
-      this.trigger('blur');
+      return this.trigger('blur');
     }
-    return this;
   };
 
   Input.prototype.highlight = function(type) {
@@ -241,14 +240,13 @@ Popover = (function(superClass) {
     if (this.active) {
       this.el.addClass('active').appendTo(this.opts.appendTo);
       this.trigger('show');
-      this.selectors.forEach(function(selector) {
+      return this.selectors.forEach(function(selector) {
         return selector.scrollToSelected();
       });
     } else {
       this.el.removeClass('active').detach();
-      this.trigger('hide');
+      return this.trigger('hide');
     }
-    return this;
   };
 
   Popover.prototype.setPosition = function(position) {
@@ -560,19 +558,19 @@ QingTimepicker = (function(superClass) {
   };
 
   QingTimepicker.prototype._updatePopoverPosition = function() {
-    var pos, position;
+    var offset, position;
     if (this.opts.appendTo) {
-      position = this.wrapper.position();
-      pos = {
-        top: position.top + this.input.el.outerHeight() + 6,
-        left: position.left
+      offset = this.wrapper.offset();
+      position = {
+        top: offset.top + this.input.el.outerHeight() + 6,
+        left: offset.left
       };
     } else {
-      pos = {
+      position = {
         top: this.input.el.outerHeight() + 6
       };
     }
-    return this.popover.setPosition(pos);
+    return this.popover.setPosition(position);
   };
 
   QingTimepicker.prototype.setTime = function(time) {

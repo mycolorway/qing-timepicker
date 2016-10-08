@@ -65,8 +65,6 @@ class Popover extends QingModule
       @el.removeClass('active').detach()
       @trigger 'hide'
 
-    @
-
   setPosition: (position) ->
     @el.css
       top: position.top

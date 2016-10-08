@@ -71,8 +71,6 @@ class Input extends QingModule
       @el.removeClass('active').blur()
       @trigger 'blur'
 
-    @
-
   highlight: (type) ->
     @removeHighlight()
     @timeWrapper.find("[data-type='#{type}'] .value").addClass 'highlighted'

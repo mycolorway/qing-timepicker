@@ -90,15 +90,15 @@ class QingTimepicker extends QingModule
 
   _updatePopoverPosition: ->
     if @opts.appendTo
-      position = @wrapper.position()
-      pos =
-        top: position.top + @input.el.outerHeight() + 6
-        left: position.left
+      offset = @wrapper.offset()
+      position =
+        top: offset.top + @input.el.outerHeight() + 6
+        left: offset.left
     else
-      pos =
+      position =
         top: @input.el.outerHeight() + 6
 
-    @popover.setPosition pos
+    @popover.setPosition position
 
   setTime: (time) ->
     parsed = util.parseDate time, @opts.format
