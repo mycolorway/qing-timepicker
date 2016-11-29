@@ -109,6 +109,7 @@ class QingTimepicker extends QingModule
       @input.setValue @time
       @el.val formattedTime
       @clearButton.addClass 'active'
+      @el.trigger 'change'
       @trigger 'change', [formattedTime]
 
   getTime: ->
