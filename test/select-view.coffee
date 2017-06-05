@@ -27,12 +27,26 @@ describe 'SelectView', ->
   it 'should generate 24 items if type is hour', ->
     expect(selectView.items).to.have.lengthOf 24
 
+  it 'should generate 12 items if type is hour and step is 2', ->
+    selectView = new SelectView
+      wrapper: $wrapper
+      step: 2
+    expect(selectView.items).to.have.lengthOf 12
+
   it 'should generate 60 items unless type is hour', ->
     $wrapper.empty()
     selectView = new SelectView
       wrapper: $wrapper
       type: 'minute'
     expect(selectView.items).to.have.lengthOf 60
+
+  it 'should generate 4 items if type is minute and step is 15', ->
+    $wrapper.empty()
+    selectView = new SelectView
+      wrapper: $wrapper
+      type: 'minute'
+      step: 15
+    expect(selectView.items).to.have.lengthOf 4
 
   it 'should append selectView\'s el to the wrapper', ->
     expect($.contains($wrapper[0], selectView.el[0])).to.be.true
