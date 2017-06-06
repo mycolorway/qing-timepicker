@@ -10,6 +10,11 @@ class QingTimepicker extends QingModule
     format: 'HH:mm:ss'
     renderer: null
     appendTo: null
+    step: {
+      hour: 1
+      minute: 1
+      second: 1
+    }
 
   @count: 0
 
@@ -46,7 +51,7 @@ class QingTimepicker extends QingModule
       .data 'qingTimepicker', @
 
   _renderChildComponents: ->
-    componentOpts = extractChildComponentOpts @opts.format
+    componentOpts = extractChildComponentOpts @opts
 
     @input = new Input $.extend
       wrapper: @wrapper
@@ -55,6 +60,7 @@ class QingTimepicker extends QingModule
 
     @popover = new Popover $.extend
       appendTo: @opts.appendTo || @wrapper
+      step: @opts.step
     , componentOpts
 
   _bind: ->
@@ -130,9 +136,9 @@ class QingTimepicker extends QingModule
     @wrapper.remove()
     $(document).off ".qing-timepicker-#{@id}"
 
-extractChildComponentOpts = (format) ->
+extractChildComponentOpts = (initOpts) ->
   opts = {}
-  switch format
+  switch initOpts.format
     when 'HH:mm:ss'
       opts.showHour = opts.showMinute = opts.showSecond = true
     when 'HH:mm'

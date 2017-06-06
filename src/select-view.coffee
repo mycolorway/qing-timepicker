@@ -4,6 +4,7 @@ class SelectView extends QingModule
   @opts:
     wrapper: null
     type: 'hour'
+    step: 1
 
   _setOptions: (opts) ->
     super
@@ -12,6 +13,7 @@ class SelectView extends QingModule
   _init: ->
     @wrapper = $ @opts.wrapper
     @type = @opts.type
+    @step = @opts.step
     @items = @_generateItems()
 
     @_render()
@@ -40,7 +42,8 @@ class SelectView extends QingModule
 
   _generateItems: ->
     length = if @type is 'hour' then 24 else 60
-    [0...length].map (item) => util.parseTimeItem(item)
+    value_array = (i for i in [0...length] by @step)
+    value_array.map (item) => util.parseTimeItem(item)
 
   select: (value) ->
     value = util.parseTimeItem value

@@ -6,6 +6,11 @@ class Popover extends QingModule
     showHour: true
     showMinute: true
     showSecond: true
+    step: {
+      hour: 1
+      minute: 1
+      second: 1
+    }
 
   _setOptions: (opts) ->
     super
@@ -24,14 +29,15 @@ class Popover extends QingModule
     @el = $ '<div class="qing-timepicker-popover"></div>'
 
   _initChildComponents: ->
-    if @opts.showHour then @_initSelectView('hour')
-    if @opts.showMinute then @_initSelectView('minute')
-    if @opts.showSecond then @_initSelectView('second')
+    if @opts.showHour then @_initSelectView('hour', @opts.step.hour)
+    if @opts.showMinute then @_initSelectView('minute', @opts.step.minute)
+    if @opts.showSecond then @_initSelectView('second', @opts.step.second)
 
-  _initSelectView: (type) ->
+  _initSelectView: (type, step) ->
     @selectors.push new SelectView
       wrapper: @el
-      type: type
+      type: type,
+      step: step
 
   _bind: ->
     @selectors.forEach (selector) =>

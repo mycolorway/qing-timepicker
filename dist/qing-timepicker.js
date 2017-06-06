@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-timepicker/license.html
  *
- * Date: 2016-11-29
+ * Date: 2017-06-6
  */
 ;(function(root, factory) {
   if (typeof module === 'object' && module.exports) {
@@ -159,7 +159,12 @@ Popover = (function(superClass) {
     appendTo: null,
     showHour: true,
     showMinute: true,
-    showSecond: true
+    showSecond: true,
+    step: {
+      hour: 1,
+      minute: 1,
+      second: 1
+    }
   };
 
   Popover.prototype._setOptions = function(opts) {
@@ -182,20 +187,21 @@ Popover = (function(superClass) {
 
   Popover.prototype._initChildComponents = function() {
     if (this.opts.showHour) {
-      this._initSelectView('hour');
+      this._initSelectView('hour', this.opts.step.hour);
     }
     if (this.opts.showMinute) {
-      this._initSelectView('minute');
+      this._initSelectView('minute', this.opts.step.minute);
     }
     if (this.opts.showSecond) {
-      return this._initSelectView('second');
+      return this._initSelectView('second', this.opts.step.second);
     }
   };
 
-  Popover.prototype._initSelectView = function(type) {
+  Popover.prototype._initSelectView = function(type, step) {
     return this.selectors.push(new SelectView({
       wrapper: this.el,
-      type: type
+      type: type,
+      step: step
     }));
   };
 
@@ -282,7 +288,8 @@ SelectView = (function(superClass) {
 
   SelectView.opts = {
     wrapper: null,
-    type: 'hour'
+    type: 'hour',
+    step: 1
   };
 
   SelectView.prototype._setOptions = function(opts) {
@@ -293,6 +300,7 @@ SelectView = (function(superClass) {
   SelectView.prototype._init = function() {
     this.wrapper = $(this.opts.wrapper);
     this.type = this.opts.type;
+    this.step = this.opts.step;
     this.items = this._generateItems();
     this._render();
     this._renderList();
@@ -329,13 +337,17 @@ SelectView = (function(superClass) {
   };
 
   SelectView.prototype._generateItems = function() {
-    var i, length, results;
+    var i, length, value_array;
     length = this.type === 'hour' ? 24 : 60;
-    return (function() {
+    value_array = (function() {
+      var j, ref, ref1, results;
       results = [];
-      for (var i = 0; 0 <= length ? i < length : i > length; 0 <= length ? i++ : i--){ results.push(i); }
+      for (i = j = 0, ref = length, ref1 = this.step; ref1 > 0 ? j < ref : j > ref; i = j += ref1) {
+        results.push(i);
+      }
       return results;
-    }).apply(this).map((function(_this) {
+    }).call(this);
+    return value_array.map((function(_this) {
       return function(item) {
         return util.parseTimeItem(item);
       };
@@ -452,7 +464,12 @@ QingTimepicker = (function(superClass) {
     el: null,
     format: 'HH:mm:ss',
     renderer: null,
-    appendTo: null
+    appendTo: null,
+    step: {
+      hour: 1,
+      minute: 1,
+      second: 1
+    }
   };
 
   QingTimepicker.count = 0;
@@ -489,13 +506,14 @@ QingTimepicker = (function(superClass) {
 
   QingTimepicker.prototype._renderChildComponents = function() {
     var componentOpts;
-    componentOpts = extractChildComponentOpts(this.opts.format);
+    componentOpts = extractChildComponentOpts(this.opts);
     this.input = new Input($.extend({
       wrapper: this.wrapper,
       placeholder: this.opts.placeholder || this.el.attr('placeholder') || ''
     }, componentOpts));
     return this.popover = new Popover($.extend({
-      appendTo: this.opts.appendTo || this.wrapper
+      appendTo: this.opts.appendTo || this.wrapper,
+      step: this.opts.step
     }, componentOpts));
   };
 
@@ -614,10 +632,10 @@ QingTimepicker = (function(superClass) {
 
 })(QingModule);
 
-extractChildComponentOpts = function(format) {
+extractChildComponentOpts = function(initOpts) {
   var opts;
   opts = {};
-  switch (format) {
+  switch (initOpts.format) {
     case 'HH:mm:ss':
       opts.showHour = opts.showMinute = opts.showSecond = true;
       break;
