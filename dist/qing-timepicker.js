@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-timepicker/license.html
  *
- * Date: 2017-06-5
+ * Date: 2017-06-6
  */
 ;(function(root, factory) {
   if (typeof module === 'object' && module.exports) {
@@ -472,8 +472,6 @@ QingTimepicker = (function(superClass) {
 
   QingTimepicker.prototype._setOptions = function(opts) {
     QingTimepicker.__super__._setOptions.apply(this, arguments);
-    console.log("OPTS: ");
-    console.log(opts);
     return $.extend(this.opts, QingTimepicker.opts, opts);
   };
 
