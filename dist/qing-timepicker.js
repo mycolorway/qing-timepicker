@@ -160,9 +160,11 @@ Popover = (function(superClass) {
     showHour: true,
     showMinute: true,
     showSecond: true,
-    hourStep: 1,
-    minuteStep: 1,
-    secondStep: 1
+    step: {
+      hour: 1,
+      minute: 1,
+      second: 1
+    }
   };
 
   Popover.prototype._setOptions = function(opts) {
@@ -185,13 +187,13 @@ Popover = (function(superClass) {
 
   Popover.prototype._initChildComponents = function() {
     if (this.opts.showHour) {
-      this._initSelectView('hour', this.opts.hourStep);
+      this._initSelectView('hour', this.opts.step.hour);
     }
     if (this.opts.showMinute) {
-      this._initSelectView('minute', this.opts.minuteStep);
+      this._initSelectView('minute', this.opts.step.minute);
     }
     if (this.opts.showSecond) {
-      return this._initSelectView('second', this.opts.secondStep);
+      return this._initSelectView('second', this.opts.step.second);
     }
   };
 
@@ -463,9 +465,11 @@ QingTimepicker = (function(superClass) {
     format: 'HH:mm:ss',
     renderer: null,
     appendTo: null,
-    hourStep: 1,
-    minuteStep: 1,
-    secondStep: 1
+    step: {
+      hour: 1,
+      minute: 1,
+      second: 1
+    }
   };
 
   QingTimepicker.count = 0;
@@ -509,9 +513,7 @@ QingTimepicker = (function(superClass) {
     }, componentOpts));
     return this.popover = new Popover($.extend({
       appendTo: this.opts.appendTo || this.wrapper,
-      hourStep: this.opts.hourStep,
-      minuteStep: this.opts.minuteStep,
-      secondStep: this.opts.secondStep
+      step: this.opts.step
     }, componentOpts));
   };
 
@@ -633,9 +635,6 @@ QingTimepicker = (function(superClass) {
 extractChildComponentOpts = function(initOpts) {
   var opts;
   opts = {};
-  opts.hourStep = initOpts.hourStep || 1;
-  opts.minuteStep = initOpts.minuteStep || 1;
-  opts.secondStep = initOpts.secondStep || 1;
   switch (initOpts.format) {
     case 'HH:mm:ss':
       opts.showHour = opts.showMinute = opts.showSecond = true;

@@ -10,9 +10,11 @@ class QingTimepicker extends QingModule
     format: 'HH:mm:ss'
     renderer: null
     appendTo: null
-    hourStep: 1
-    minuteStep: 1
-    secondStep: 1
+    step: {
+      hour: 1
+      minute: 1
+      second: 1
+    }
 
   @count: 0
 
@@ -58,9 +60,7 @@ class QingTimepicker extends QingModule
 
     @popover = new Popover $.extend
       appendTo: @opts.appendTo || @wrapper
-      hourStep: @opts.hourStep
-      minuteStep: @opts.minuteStep
-      secondStep: @opts.secondStep
+      step: @opts.step
     , componentOpts
 
   _bind: ->
@@ -138,9 +138,6 @@ class QingTimepicker extends QingModule
 
 extractChildComponentOpts = (initOpts) ->
   opts = {}
-  opts.hourStep = initOpts.hourStep || 1
-  opts.minuteStep = initOpts.minuteStep || 1
-  opts.secondStep = initOpts.secondStep || 1
   switch initOpts.format
     when 'HH:mm:ss'
       opts.showHour = opts.showMinute = opts.showSecond = true
